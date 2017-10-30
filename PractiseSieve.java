@@ -1,11 +1,5 @@
-//import java.security.SecureRandom;
+//NOT YET CRYPTOGRAPHICALLY SECURE RNG
 public class PractiseSieve{
-//	randomFunction(){
-//	SecureRandom random=new SecureRandom();
-//	byte[] values=new byte[20];
-//	random.nextBytes(values);
-//	System.out.println("random = "+random);
-//	}
 	public static void main(String[] args){
 		while(true){
 			long p=(long)(Math.random()*(1000000000-2)+2);
