@@ -37,13 +37,24 @@ public class RSAEncryption {
 //ENCRYPTION
 	int message=123;
 //PUBLIC KEY
+	//c=123^17
 	Double c=java.lang.Math.pow(message,e);
 	BigInteger f=new BigDecimal(c).toBigInteger();
 	System.out.println("our full public exponent = "+f);
+	//mod 3233
 	BigInteger g=BigInteger.valueOf(pq.intValue());
 	BigInteger h=f.mod(g);
 	System.out.println("our encrypted message = "+h);
 //PRIVATE KEY
+	//This gets the m=855^2753 done
+	BigInteger ll=h.pow(d);
+	//This converts it to int type to do modulo operator on
+	int oo=ll.intValue();
+	int mm=oo%pq;
+	System.out.println(mm);
+	
+	
+//FIRST TRY
 	int i=h.intValue();
 //Another way of doing power
 //	Double j=java.lang.Math.pow(i,d);
@@ -52,10 +63,11 @@ public class RSAEncryption {
 //	BigInteger k=new BigDecimal(j).toBigInteger();
 	System.out.println("our encrypted message as an int data type =  "+i);
 	//another way of doing power
-	BigInteger l=h.pow(d).add(BigInteger.ONE);
+	d=1200;
+	BigInteger l=h.pow(d);
 	System.out.println(l);
 	//Could store it in an array and bring each integer out one by one, but the run and compile time would be ridiculous.
 	BigInteger m=l.mod(g);
-	System.out.println(m);
+	System.out.println("unencrypted message = "+m);
 	}	
 }
