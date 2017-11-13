@@ -3,6 +3,7 @@ import java.math.BigInteger;
 public class RSAEncryption {
 	public static void main(String[] args){
 //STAGE ONE AND TWO
+	Sieve sieve=new Sieve();
 	int p=61;
 	int q=53;
 //STAGE THREE
