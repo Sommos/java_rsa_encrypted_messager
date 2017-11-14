@@ -1,5 +1,5 @@
 import java.math.BigInteger;
-public class RSAEncryption {
+public class RSAEncryption{
 	public static void main(String[] args){
 	Sieve sieve=new Sieve();
 	int p=sieve.randPrimeBetween(50000, 99999);
