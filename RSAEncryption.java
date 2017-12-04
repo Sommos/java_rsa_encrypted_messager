@@ -27,7 +27,7 @@ public class RSAEncryption {
 		return a * (b / gcd(a,b));
 	}
 	public long gcd(long a, long b) {
-		while(b > 0){
+		while(b != 0){
 			long temp = b;
 			b = a % b;
 			a = temp;
@@ -50,14 +50,14 @@ public class RSAEncryption {
 			d = d + 1;
 			count = count + 1;
 			if((e * d % lcm) == 1){
-				d = (d < 0) ? d * - 1 : d;
-				if(d > 10000){
+				if(d > 1000000){
 					Main.println("Error Code : 0");
 					Main.println(d);
 					System.exit(0);
 				}
 			}
 		}
+		d = (d < 0) ? d * - 1 : d;
 		return d;	
 	}
 	public BigInteger castBigInteger(int number){
