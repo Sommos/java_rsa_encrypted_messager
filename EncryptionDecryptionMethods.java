@@ -16,10 +16,10 @@ public class EncryptionDecryptionMethods {
 //	}
 	
 	// THIS METHOD ENCRYPTS THE USERS MESSAGE //
-    public byte[] returnEncryptedMessage(byte[] message, BigInteger p, BigInteger q) {
-    	RSAEncryption rsa = new RSAEncryption();
-    	BigInteger e = rsa.getE();
-    	BigInteger pq = rsa.getPQ(p, q);
+    public byte[] returnEncryptedMessage(byte[] message, BigInteger p, BigInteger q, BigInteger e, BigInteger pq) {
+//    	RSAEncryption rsa = new RSAEncryption();
+//    	BigInteger e = rsa.getE();
+//    	BigInteger pq = rsa.getPQ(p, q);
         return (new BigInteger(message)).modPow(e, pq).toByteArray();
     }
     
