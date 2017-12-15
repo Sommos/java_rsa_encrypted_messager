@@ -1,71 +1,79 @@
 package default_package;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 
 public class RSAEncryption {
 	
 	// THIS GETS THE FIRST PRIME (P) //
-	protected int getPrimeP() {
-		Sieve sieve = new Sieve();
-		int p = sieve.randPrimeBetween(1000000000, 999999999);
+	protected BigInteger getPrimeP() {
+//		Sieve sieve = new Sieve();
+//		int p = sieve.randPrimeBetween(1000000000, 999999999);
+		int bitLength = 1024;
+		SecureRandom random = new SecureRandom();
+		BigInteger p = BigInteger.probablePrime(bitLength, random);
 		// DEFAULT VALUE USED FOR TESTING BASIC LOGIC //
 //		int p = 61;
 		return p;
 	}
 	
 	// THIS GETS THE SECOND PRIME (Q) //
-	protected int getPrimeQ() {
-		Sieve sieve = new Sieve();
-		int q = sieve.randPrimeBetween(1000000000, 999999999);
+	protected BigInteger getPrimeQ() {
+//		Sieve sieve = new Sieve();
+//		int q = sieve.randPrimeBetween(1000000000, 999999999);
+		int bitLength = 1024;
+		SecureRandom random = new SecureRandom();
+		BigInteger q = BigInteger.probablePrime(bitLength, random);
 		// DEFAULT VALUE USED FOR TESTING BASIC LOGIC //
 //		int q = 53;
 		return q;
 	}
 	
 	// THIS CALCULATES THE MULTIPLICATION OF P AND Q //
-	public BigInteger getPQ(int p, int q) {
-		BigInteger bigIntP = castBigInteger(p);
-		BigInteger bigIntQ = castBigInteger(q);
-		BigInteger pq = bigIntP.multiply(bigIntQ);
+	protected BigInteger getPQ(BigInteger p, BigInteger q) {
+		BigInteger pq = p.multiply(q);
 		return pq;
 	}
 	
 	// THIS GETS THE TOTIENT OF PRIME P //
-	public int getPrimePTotient(int p) {
-		int pTotient = p - 1;
+	protected BigInteger getPrimePTotient(BigInteger p) {
+		BigInteger one = new BigInteger("" + 1);
+		BigInteger pTotient = p.subtract(one);
 		return pTotient;
 	}
 	
 	// THIS GETS THE TOTIENT OF PRIME Q //
-	public int getPrimeQTotient(int q) {
-		int qTotient = q - 1;
+	protected BigInteger getPrimeQTotient(BigInteger q) {
+		BigInteger one = new BigInteger("" + 1);
+		BigInteger qTotient = q.subtract(one);
 		return qTotient;
 	}
 	
 	// THIS CALCULATES THE TOTIENTS MULTIPLED //
-	public int getMultipliedTotients(int primeP, int primeQ) {
+	protected int getMultipliedTotients(int primeP, int primeQ) {
 		int multipliedTotients = primeP * primeQ;
 		return multipliedTotients;
 	}
 	
 	// THIS CALCULATES LCM //
-	public long lcm(long a, long b) {
-		return a * (b / gcd(a,b));
+	protected BigInteger lcm(BigInteger a, BigInteger b) {
+		return a.multiply(b.divide(gcd(a,b)));
 	}
 	
 	// THIS CALCULATES GCD //
-	public long gcd(long a, long b) {
-		while(b != 0){
-			long temp = b;
-			b = a % b;
+	protected BigInteger gcd(BigInteger a, BigInteger b) {
+		BigInteger zero = new BigInteger("" + 0);
+		while(!b.equals(zero)){
+			BigInteger temp = b;
+			b = a.mod(b);
 			a = temp;
 		}
 		return a;
 	}
 	
 	// THIS CALCULATES E FOR THE PROGRAM //
-	protected int getE() {
-		int e = 65537;
+	protected BigInteger getE() {
+		BigInteger e = new BigInteger("" + 65537);
 		return e;
 // LEAVE THIS ALONE FOR THE MOMENT - MAY NEED IT LATER //
 /*		int e = 0;
@@ -81,7 +89,7 @@ public class RSAEncryption {
 	}
 	
 	// THIS CALCULATES D FOR THE PROGRAM //
-	public BigInteger getD(int e, int lcm, int p, int q) {
+	protected BigInteger getD(BigInteger e, BigInteger p, BigInteger q) {
 // MIGHT NEED THIS LATER // 
 /*		int multipliedTotients = getMultipliedTotients(getPrimePTotient(p), getPrimeQTotient(q));
 		int d = 1;
@@ -105,11 +113,8 @@ public class RSAEncryption {
 		}
 		d = (d < 0) ? d * - 1 : d;
 */
-		BigInteger bigIntP = castBigInteger(p);
-		BigInteger bigIntQ = castBigInteger(q);
-		BigInteger phi = bigIntP.subtract(BigInteger.ONE).multiply(bigIntQ.subtract(BigInteger.ONE));
-		BigInteger bigIntE = castBigInteger(e);
-		BigInteger d = bigIntE.modInverse(phi);
+		BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+		BigInteger d = e.modInverse(phi);
 		return d;
 
 	}
