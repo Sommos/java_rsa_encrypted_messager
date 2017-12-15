@@ -7,33 +7,45 @@ public class RSAEncryption {
 	// THIS GETS THE FIRST PRIME (P) //
 	protected int getPrimeP() {
 		Sieve sieve = new Sieve();
-		int p = sieve.randPrimeBetween(50, 60);
+		int p = sieve.randPrimeBetween(1000000000, 999999999);
+		// DEFAULT VALUE USED FOR TESTING BASIC LOGIC //
+//		int p = 61;
 		return p;
 	}
 	
 	// THIS GETS THE SECOND PRIME (Q) //
 	protected int getPrimeQ() {
 		Sieve sieve = new Sieve();
-		int q = sieve.randPrimeBetween(50, 60);
+		int q = sieve.randPrimeBetween(1000000000, 999999999);
+		// DEFAULT VALUE USED FOR TESTING BASIC LOGIC //
+//		int q = 53;
 		return q;
 	}
 	
 	// THIS CALCULATES THE MULTIPLICATION OF P AND Q //
-	public Integer getPQ(int p, int q) {
-		Integer pq = p * q;
+	public BigInteger getPQ(int p, int q) {
+		BigInteger bigIntP = castBigInteger(p);
+		BigInteger bigIntQ = castBigInteger(q);
+		BigInteger pq = bigIntP.multiply(bigIntQ);
 		return pq;
 	}
 	
 	// THIS GETS THE TOTIENT OF PRIME P //
 	public int getPrimePTotient(int p) {
-		int pTotient = p-1;
+		int pTotient = p - 1;
 		return pTotient;
 	}
 	
 	// THIS GETS THE TOTIENT OF PRIME Q //
 	public int getPrimeQTotient(int q) {
-		int qTotient = q-1;
+		int qTotient = q - 1;
 		return qTotient;
+	}
+	
+	// THIS CALCULATES THE TOTIENTS MULTIPLED //
+	public int getMultipliedTotients(int primeP, int primeQ) {
+		int multipliedTotients = primeP * primeQ;
+		return multipliedTotients;
 	}
 	
 	// THIS CALCULATES LCM //
@@ -69,14 +81,22 @@ public class RSAEncryption {
 	}
 	
 	// THIS CALCULATES D FOR THE PROGRAM //
-	public int getD(int e, int lcm){
-		int d = 0;
+	public BigInteger getD(int e, int lcm, int p, int q) {
+// MIGHT NEED THIS LATER // 
+/*		int multipliedTotients = getMultipliedTotients(getPrimePTotient(p), getPrimeQTotient(q));
+		int d = 1;
+		int de = e * d;
+		int x =  % multipliedTotients;
+		Main.println(x);
+		//int y = 1 + ()%
+		//int x = 
+		d = 0;
 		int count = 0;
-		while((e * d % lcm) != 1){
+		while((e * d % lcm) != 1) {
 			d = d + 1;
 			count = count + 1;
-			if((e * d % lcm) == 1){
-				if(d > 1000000){
+			if((e * d % lcm) == 1) {
+				if(d > 1000000) {
 					Main.errorPrintln("Error Code : 0");
 					Main.println(d);
 					System.exit(0);
@@ -84,17 +104,24 @@ public class RSAEncryption {
 			}
 		}
 		d = (d < 0) ? d * - 1 : d;
-		return d;	
+*/
+		BigInteger bigIntP = castBigInteger(p);
+		BigInteger bigIntQ = castBigInteger(q);
+		BigInteger phi = bigIntP.subtract(BigInteger.ONE).multiply(bigIntQ.subtract(BigInteger.ONE));
+		BigInteger bigIntE = castBigInteger(e);
+		BigInteger d = bigIntE.modInverse(phi);
+		return d;
+
 	}
 	
 	// THIS METHOD CASTS AN INT TO A BIGINTEGER DATA TYPE (FOR EASE OF USE) //
-	public BigInteger castBigInteger(int number){
+	public BigInteger castBigInteger(int number) {
 		BigInteger x = new BigInteger("" + number);
 		return x;
 	}
 	
 	// THIS METHOD POWERS AND MODS GIVEN VALUES //
-	public BigInteger powerMod(BigInteger message, BigInteger e, BigInteger pq){
+	public BigInteger powerMod(BigInteger message, BigInteger e, BigInteger pq) {
 		BigInteger powerMod = message.modPow(e,
 				pq);
 		return powerMod; 
