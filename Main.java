@@ -1,9 +1,6 @@
 package default_package;
 
-import java.util.Arrays;
 import java.math.BigInteger;
-import java.io.IOException;
-
 import javax.swing.JOptionPane;
 
 public class Main {
