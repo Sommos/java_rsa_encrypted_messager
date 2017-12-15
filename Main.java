@@ -11,16 +11,20 @@ public class Main {
 //		println("Original User Message = " + userInput + ".");
 		// WHEN USER PRESSES SEND BUTTON DO { //
 //		byte[] messageBytes = userInput.getBytes();
-        println("Encrypting String: " + userInput);
-        println("String in Bytes: " + bytesToString(userInput.getBytes()));
+        println("String: " + userInput);
         RSAEncryption rsa = new RSAEncryption();
         BigInteger p = rsa.getPrimeP();
+        println("Prime P = " + p);
         BigInteger q = rsa.getPrimeQ();
+        println("Prime Q = " + q);
         EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-        byte[] encrypted = encDecMeth.returnEncryptedMessage(userInput.getBytes(), p, q);
-        byte[] decrypted = encDecMeth.returnDecryptedMessage(encrypted,rsa.getD(rsa.getE(), p, q), rsa.getPQ(p, q));
-        println("Decrypting Bytes: " + bytesToString(decrypted));
-        println("Decrypted String: " + new String(decrypted));
+        BigInteger e = rsa.getE();
+        BigInteger pq = rsa.getPQ(p, q);
+        byte[] encrypted = encDecMeth.returnEncryptedMessage(userInput.getBytes(), p, q, e, pq);
+        byte[] decrypted = encDecMeth.returnDecryptedMessage(encrypted,rsa.getD(e, p, q), pq);
+        // MAY CHANGE THIS BACK TO DECRYPTED IF BYTE VALUE FAILS //
+        println("Byte Value: " + bytesToString(encrypted) + ".");
+        println("Decrypted String: " + new String(decrypted) + ".");
 //		RSAEncryption rsa = new RSAEncryption();
 //		BigInteger p = rsa.getPrimeP();
 //		BigInteger q = rsa.getPrimeQ();
