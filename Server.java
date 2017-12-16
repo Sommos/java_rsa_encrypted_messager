@@ -1,6 +1,7 @@
 package encryption;
  
 import java.io.*;
+import java.math.BigInteger;
 import java.net.*;
 import java.awt.*;
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class Server extends JFrame {
 	private ServerSocket server;
 	private Socket connection;
 	
-	// CONSTRUCTOR FOR SERVER SUB-CLASS //
+	// CONSTRUCTOR FOR CLIENT SUB-CLASS //
 	public Server() {
 		setTitle("Samuels Encryption Server Service");
 		userText = new JTextField();
@@ -46,7 +47,7 @@ public class Server extends JFrame {
 					setupStreams();
 					whileChatting();
 				} catch(EOFException eofException) {
-					showMessage("\n The server has ended the connection.");
+					showMessage("\nThe server has ended the connection.");
 				} finally {
 					closeEverything();
 				}
@@ -59,9 +60,9 @@ public class Server extends JFrame {
 	
 	// METHOD THAT WAITS FOR A CONNECTION //
 	private void waitForConnection() throws IOException {
-		showMessage("Waiting for another user to connect...\n");
+		showMessage("\nWaiting for another user to connect...");
 		connection = server.accept();
-		showMessage("You have connected to " + connection.getInetAddress().getHostName());
+		showMessage("\nYou have connected to " + connection.getInetAddress().getHostName());
 	}
 	
 	// SETS STREAMS TO SEND AND RECIEVE DATA //
@@ -69,28 +70,37 @@ public class Server extends JFrame {
 		output = new ObjectOutputStream(connection.getOutputStream()); 
 		output.flush();
 		input = new ObjectInputStream(connection.getInputStream());
-		showMessage("\n Streams are now setup! \n");
+		showMessage("\nStreams are now setup!");
 	}
 	
 	// METHOD THAT IS RUN WHILST THE USERS ARE CONNECTED TO EACH OTHER //
 	private void whileChatting() throws IOException {
-		String message = "You are now connected!";
+		String message = "\nYou are now connected!\n";
 		sendMessage(message);
 		ableToType(true);
 		do {
 			try {
 				message = (String) input.readObject();
+//				EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
+//				RSAEncryption rsa = new RSAEncryption();
+//				BigInteger e = rsa.getE();
+//				BigInteger p = rsa.getPrimeP();
+//				BigInteger q = rsa.getPrimeQ();
+//				BigInteger pq = rsa.getPQ(p,q);
+//				byte[] messageInByteArray = message.getBytes(message);
+//				byte[] decrypted = encDecMeth.returnDecryptedMessage(messageInByteArray,rsa.getD(e, p, q), pq);
+//			    String finalDecryptedString = new String(decrypted);
 				showMessage("\n" + message);
 			} catch(ClassNotFoundException classNotFoundException) {
-				showMessage("\n The server is unable to understand that String.");
+				showMessage("\nThe server is unable to understand that String.");
 			}
 			
-		} while(!message.equals("CLIENT END"));
+		} while(!message.equals("Client : END"));
 	}
 	
 	// METHOD THAT CLOSES SOCKETS AND STREAMS ONCE FINISHED //
 	private void closeEverything() {
-		showMessage("\n Closing connections...\n");
+		showMessage("\nClosing connections...\n");
 		ableToType(false);
 		try {
 			output.close();
@@ -104,13 +114,14 @@ public class Server extends JFrame {
 	// METHOD THAT SENDS THE MESSAGE TO CLIENT //
 	private void sendMessage(String message) {
 		try {
+			showMessage("\nServer : " + message);
 //			EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-//			String encryptedUserMessage = encDecMeth.encrypt(message);
-			output.writeObject("SERVER - " + message);
+//			String startEncryptionMessage = message;
+//			String encryptedUserMessage = encDecMeth.encrypt(startEncryptionMessage);
+			output.writeObject("Server : " + message);
 			output.flush();
-			showMessage("\nServer - " + message);
 		} catch(IOException ioException) {
-			chatWindow.append("\n ERROR CODE : 0");
+			chatWindow.append("\nERROR CODE : 0");
 		}
 	}
 	
