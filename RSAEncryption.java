@@ -1,10 +1,9 @@
-package default_package;
+package encryption;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
 public class RSAEncryption {
-	
 	// THIS GETS THE FIRST PRIME (P) //
 	protected BigInteger getPrimeP() {
 //		Sieve sieve = new Sieve();
