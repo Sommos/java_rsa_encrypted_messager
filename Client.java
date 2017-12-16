@@ -44,7 +44,7 @@ public class Client extends JFrame {
 			setupStreams();
 			whileChatting();
 		} catch(EOFException eofException) {
-			showMessage("\n Client terminated connection.");
+			showMessage("\nClient terminated connection.");
 		} catch(IOException ioException) {
 			ioException.printStackTrace();
 		} finally {
@@ -53,16 +53,16 @@ public class Client extends JFrame {
 	}
 	
 	private void connectToServer() throws IOException {
-		showMessage("Attempting connection...\n");
+		showMessage("\nAttempting connection...");
 		connection = new Socket(InetAddress.getByName(serverIP), 6789);
-		showMessage("Connected to : " + connection.getInetAddress().getHostName());
+		showMessage("\nConnected to : " + connection.getInetAddress().getHostName());
 	}
 	
 	private void setupStreams() throws IOException {
 		output = new ObjectOutputStream(connection.getOutputStream());
 		output.flush();
 		input = new ObjectInputStream(connection.getInputStream());
-		showMessage("\n Your streams are good to go.\n");
+		showMessage("\nYour streams are good to go.");
 	}
 	
 	private void whileChatting() throws IOException {
@@ -77,7 +77,7 @@ public class Client extends JFrame {
 			} catch(ClassNotFoundException classNotFoundException) {
 				showMessage("\nThe server is unable to understand that String.");
 			}
-		} while(!message.equals("SERVER - END"));
+		} while(!message.equals("Server : END"));
 	}
 	
 	private void closeEverything() {
@@ -94,11 +94,12 @@ public class Client extends JFrame {
 	
 	private void sendMessage(String message) {
 		try {
+			showMessage("\nClient : " + message);
 //			EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-//			String encryptedUserMessage = encDecMeth.encrypt(message);
-			output.writeObject("Client - " + message);
+//			String startEncryptionMessage = message;
+//			String encryptedUserMessage = encDecMeth.encrypt(startEncryptionMessage);
+			output.writeObject("Client : " + message);
 			output.flush();
-			showMessage("\nClient - " + message);
 		} catch(IOException ioException) {
 			chatWindow.append("\nClient had an issue with sending that message.");
 		}
@@ -113,9 +114,13 @@ public class Client extends JFrame {
 	}
 	
 	private void showMessageReal(final String message) {
-		EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-		String decryptedUserMessage = encDecMeth.decrypt(message.getBytes());
-		chatWindow.append(decryptedUserMessage);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
+				String decryptedUserMessage = encDecMeth.decrypt(message.getBytes());
+				chatWindow.append(decryptedUserMessage);
+			}
+		});
 	}
 	
 	private void ableToType(final boolean tof) {
