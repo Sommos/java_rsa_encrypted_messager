@@ -1,9 +1,8 @@
-package default_package;
+package encryption;
 
 import java.math.BigInteger;
 
 public class EncryptionDecryptionMethods {
-	
 //	// THIS METHOD ENCRYPTS THE USERS MESSAGE //
 //	public BigInteger returnEncryptedMessage(int message, BigInteger p, BigInteger q) {
 //		RSAEncryption rsa = new RSAEncryption();
@@ -37,5 +36,69 @@ public class EncryptionDecryptionMethods {
     // THIS METHOD DECRYPTS THE USERS MESSAGE //
     public byte[] returnDecryptedMessage(byte[] message, BigInteger d, BigInteger pq) {
     	return (new BigInteger(message)).modPow(d, pq).toByteArray();
+    }
+    
+    // THIS METHOD RETURNS THE BYTE VALUE OF THE ENCRYPTED MESSAGE //
+    protected byte[] encryptedByteMethod(String userInput) {
+    	RSAEncryption rsa = new RSAEncryption();
+    	BigInteger e = rsa.getE();
+		BigInteger p = rsa.getPrimeP();
+		BigInteger q = rsa.getPrimeQ();
+		BigInteger pq = rsa.getPQ(p, q);
+    	byte[] encrypted = returnEncryptedMessage(userInput.getBytes(), p, q, e, pq);
+    	return encrypted;
+    }
+    
+    // THIS METHOD RETURNS THE BYTE VALUE OF THE DECRYPTED MESSAGE //
+    protected byte[] decryptedByteMethod(byte[] encrypted) {
+    	RSAEncryption rsa = new RSAEncryption();
+    	BigInteger e = rsa.getE();
+		BigInteger p = rsa.getPrimeP();
+		BigInteger q = rsa.getPrimeQ();
+		BigInteger pq = rsa.getPQ(p, q);
+//		byte[] encrypted = encryptedString.getBytes()
+    	byte[] decrypted = returnDecryptedMessage(encrypted,rsa.getD(e, p, q), pq);
+    	return decrypted;
+    }
+    
+    // METHOD TO ENCRYPT USER INPUT //
+    protected String encrypt(String userInput) {
+    	RSAEncryption rsa = new RSAEncryption();
+        BigInteger p = rsa.getPrimeP();
+//      Main.println("Encryption Prime P = " + p);
+        BigInteger q = rsa.getPrimeQ();
+//      Main.println("Encryption Prime Q = " + q);
+        EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
+        BigInteger e = rsa.getE();
+        BigInteger pq = rsa.getPQ(p, q);
+        byte[] encrypted = encDecMeth.returnEncryptedMessage(userInput.getBytes(), p, q, e, pq);
+//      Main.println("Byte Value: " + bytesToString(encrypted) + ".");
+        String encryptedString = bytesToString(encrypted);
+        return encryptedString;
+    }
+    	
+    // METHOD TO DECRYPT USER INPUT //
+    protected String decrypt(byte[] enc) {
+    	RSAEncryption rsa = new RSAEncryption();
+    	BigInteger p = rsa.getPrimeP();
+//   	Main.println("Decryption Prime P = " + p);
+    	BigInteger q = rsa.getPrimeQ();
+//    	Main.println("Decryption Prime Q = " + q);
+    	BigInteger pq = rsa.getPQ(p, q);
+    	BigInteger e = rsa.getE();
+    	EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
+    	byte[] decrypted = encDecMeth.returnDecryptedMessage(enc,rsa.getD(e, p, q), pq);
+//    	Main.println("Decrypted String: " + new String(decrypted) + ".");
+    	String decryptedString = new String(decrypted);
+    	return decryptedString;
+    }
+    	
+    // METHOD TO CONVERT BYTES TO A STRING //
+    public String bytesToString(byte[] encrypted) {
+    	String test = "";
+    	for (byte b : encrypted) {
+    		test += Byte.toString(b);
+      	}
+    	return test;
     }
 }
