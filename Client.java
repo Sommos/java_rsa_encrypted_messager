@@ -16,6 +16,7 @@ public class Client extends JFrame {
 	private String serverIP;
 	private Socket connection;
 	
+	// CONSTRUCTOR FOR CLIENT SUB-CLASS //
 	public Client(String host) {
 		setTitle("Samuels Encryption Client Service");
 		serverIP = host;
@@ -34,10 +35,11 @@ public class Client extends JFrame {
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		int width = (int) screenSize.getWidth();
 //		int height = (int) screenSize.getHeight();
-		setSize(700,700);
+		setSize(325,375);
 		setVisible(true);
 	}
 	
+	// STARTS THE CLIENT //
 	public void startRunning() {
 		try {
 			connectToServer();
@@ -52,12 +54,14 @@ public class Client extends JFrame {
 		}
 	}
 	
+	// METHOD THAT SETS A CONNECTION UP //
 	private void connectToServer() throws IOException {
-		showMessage("\nAttempting connection...");
+		showMessage("Attempting connection...");
 		connection = new Socket(InetAddress.getByName(serverIP), 6789);
 		showMessage("\nConnected to : " + connection.getInetAddress().getHostName());
 	}
 	
+	// SETS STREAMS TO SEND AND RECIEVE DATA //
 	private void setupStreams() throws IOException {
 		output = new ObjectOutputStream(connection.getOutputStream());
 		output.flush();
@@ -65,6 +69,7 @@ public class Client extends JFrame {
 		showMessage("\nYour streams are good to go.");
 	}
 	
+	// METHOD THAT IS RUN WHILST THE USERS ARE CONNECTED TO EACH OTHER //
 	private void whileChatting() throws IOException {
 		ableToType(true);
 		do {
@@ -77,9 +82,10 @@ public class Client extends JFrame {
 			} catch(ClassNotFoundException classNotFoundException) {
 				showMessage("\nThe server is unable to understand that String.");
 			}
-		} while(!message.equals("Server : END"));
+		} while(!message.equals("Server : END CONNECTION"));
 	}
 	
+	// METHOD THAT CLOSES SOCKETS AND STREAMS ONCE FINISHED //
 	private void closeEverything() {
 		showMessage("\nClosing all connections...");
 		ableToType(false);
@@ -92,6 +98,7 @@ public class Client extends JFrame {
 		}
 	}
 	
+	// METHOD THAT SENDS THE MESSAGE TO CLIENT //
 	private void sendMessage(String message) {
 		try {
 			showMessage("\nClient : " + message);
@@ -105,6 +112,7 @@ public class Client extends JFrame {
 		}
 	}
 	
+	// METHOD THAT SHOWS THE MESSAGE TO CLIENT //
 	private void showMessage(final String message) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -113,16 +121,7 @@ public class Client extends JFrame {
 		});
 	}
 	
-	private void showMessageReal(final String message) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-				String decryptedUserMessage = encDecMeth.decrypt(message.getBytes());
-				chatWindow.append(decryptedUserMessage);
-			}
-		});
-	}
-	
+	// METHOD THAT ALLOWS / DISALLOWS THE USER TO TYPE IN THE CHAT BOX //
 	private void ableToType(final boolean tof) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
