@@ -5,24 +5,24 @@ import java.security.SecureRandom;
 
 public class RSAEncryption {
 	// THIS GETS THE FIRST PRIME (P) //
-	protected BigInteger getPrimeP() {
+	protected BigInteger getPrimeP(int bitLength) {
 //		Sieve sieve = new Sieve();
 //		int p = sieve.randPrimeBetween(1000000000, 999999999);
-		int bitLength = 1024;
+		int finalBitLength = bitLength;
 		SecureRandom random = new SecureRandom();
-		BigInteger p = BigInteger.probablePrime(bitLength, random);
+		BigInteger p = BigInteger.probablePrime(finalBitLength, random);
 		// DEFAULT VALUE USED FOR TESTING BASIC LOGIC //
 //		int p = 61;
 		return p;
 	}
 	
 	// THIS GETS THE SECOND PRIME (Q) //
-	protected BigInteger getPrimeQ() {
+	protected BigInteger getPrimeQ(int bitLength) {
 //		Sieve sieve = new Sieve();
 //		int q = sieve.randPrimeBetween(1000000000, 999999999);
-		int bitLength = 1024;
+		int finalBitLength = bitLength;
 		SecureRandom random = new SecureRandom();
-		BigInteger q = BigInteger.probablePrime(bitLength, random);
+		BigInteger q = BigInteger.probablePrime(finalBitLength, random);
 		// DEFAULT VALUE USED FOR TESTING BASIC LOGIC //
 //		int q = 53;
 		return q;
