@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.net.*;
 import java.awt.*;
 import javax.swing.*;
+
 import java.awt.event.*;
 
 
@@ -16,7 +17,7 @@ public class Server extends JFrame {
 	private ServerSocket server;
 	private Socket connection;
 	
-	// CONSTRUCTOR FOR CLIENT SUB-CLASS //
+	// CONSTRUCTOR FOR SERVER SUB-CLASS //
 	public Server() {
 		setTitle("Samuels Encryption Server Service");
 		userText = new JTextField();
@@ -34,10 +35,11 @@ public class Server extends JFrame {
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		int width = (int) screenSize.getWidth();
 //		int height = (int) screenSize.getHeight();
-		setSize(700,700);
+		setSize(325,375);
 		setVisible(true);
 	}
 	
+	// STARTS THE SERVER // 
 	public void startRunning() {
 		try {
 			server = new ServerSocket(6789, 100);
@@ -60,7 +62,7 @@ public class Server extends JFrame {
 	
 	// METHOD THAT WAITS FOR A CONNECTION //
 	private void waitForConnection() throws IOException {
-		showMessage("\nWaiting for another user to connect...");
+		showMessage("Waiting for another user to connect...");
 		connection = server.accept();
 		showMessage("\nYou have connected to " + connection.getInetAddress().getHostName());
 	}
@@ -75,27 +77,28 @@ public class Server extends JFrame {
 	
 	// METHOD THAT IS RUN WHILST THE USERS ARE CONNECTED TO EACH OTHER //
 	private void whileChatting() throws IOException {
-		String message = "\nYou are now connected!\n";
+		String message = "You are now connected!\n";
 		sendMessage(message);
 		ableToType(true);
 		do {
 			try {
 				message = (String) input.readObject();
+//				byte[] messageInBytes = (byte[]) input.readObject();
 //				EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
 //				RSAEncryption rsa = new RSAEncryption();
 //				BigInteger e = rsa.getE();
 //				BigInteger p = rsa.getPrimeP();
 //				BigInteger q = rsa.getPrimeQ();
 //				BigInteger pq = rsa.getPQ(p,q);
-//				byte[] messageInByteArray = message.getBytes(message);
-//				byte[] decrypted = encDecMeth.returnDecryptedMessage(messageInByteArray,rsa.getD(e, p, q), pq);
+//				byte[] decrypted = encDecMeth.returnDecryptedMessage(messageInBytes,rsa.getD(e, p, q), pq);
 //			    String finalDecryptedString = new String(decrypted);
+//			    showMessage("\n" + finalDecryptedString);
 				showMessage("\n" + message);
 			} catch(ClassNotFoundException classNotFoundException) {
 				showMessage("\nThe server is unable to understand that String.");
 			}
 			
-		} while(!message.equals("Client : END"));
+		} while(!message.equals("Client : END CONNECTION"));
 	}
 	
 	// METHOD THAT CLOSES SOCKETS AND STREAMS ONCE FINISHED //
