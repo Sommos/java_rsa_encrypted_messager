@@ -39,11 +39,11 @@ public class EncryptionDecryptionMethods {
     }
     
     // THIS METHOD RETURNS THE BYTE VALUE OF THE ENCRYPTED MESSAGE //
-    protected byte[] encryptedByteMethod(String userInput) {
+    protected byte[] encryptedByteMethod(String userInput, int userInputBitLengthInt) {
     	RSAEncryption rsa = new RSAEncryption();
     	BigInteger e = rsa.getE();
-		BigInteger p = rsa.getPrimeP();
-		BigInteger q = rsa.getPrimeQ();
+		BigInteger p = rsa.getPrimeP(userInputBitLengthInt);
+		BigInteger q = rsa.getPrimeQ(userInputBitLengthInt);
 		BigInteger pq = rsa.getPQ(p, q);
     	byte[] encrypted = returnEncryptedMessage(userInput.getBytes(), p, q, e, pq);
     	return encrypted;
@@ -53,8 +53,8 @@ public class EncryptionDecryptionMethods {
     protected byte[] decryptedByteMethod(byte[] encrypted) {
     	RSAEncryption rsa = new RSAEncryption();
     	BigInteger e = rsa.getE();
-		BigInteger p = rsa.getPrimeP();
-		BigInteger q = rsa.getPrimeQ();
+		BigInteger p = rsa.getPrimeP(1024);
+		BigInteger q = rsa.getPrimeQ(1024);
 		BigInteger pq = rsa.getPQ(p, q);
 //		byte[] encrypted = encryptedString.getBytes()
     	byte[] decrypted = returnDecryptedMessage(encrypted,rsa.getD(e, p, q), pq);
@@ -62,11 +62,11 @@ public class EncryptionDecryptionMethods {
     }
     
     // METHOD TO ENCRYPT USER INPUT //
-    protected String encrypt(String userInput) {
+    protected String encrypt(String userInput, int userInputBitLengthInt) {
     	RSAEncryption rsa = new RSAEncryption();
-        BigInteger p = rsa.getPrimeP();
+        BigInteger p = rsa.getPrimeP(userInputBitLengthInt);
 //      Main.println("Encryption Prime P = " + p);
-        BigInteger q = rsa.getPrimeQ();
+        BigInteger q = rsa.getPrimeQ(userInputBitLengthInt);
 //      Main.println("Encryption Prime Q = " + q);
         EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
         BigInteger e = rsa.getE();
@@ -78,11 +78,11 @@ public class EncryptionDecryptionMethods {
     }
     	
     // METHOD TO DECRYPT USER INPUT //
-    protected String decrypt(byte[] enc) {
+    protected String decrypt(byte[] enc, int userInputBitLengthInt) {
     	RSAEncryption rsa = new RSAEncryption();
-    	BigInteger p = rsa.getPrimeP();
+    	BigInteger p = rsa.getPrimeP(userInputBitLengthInt);
 //   	Main.println("Decryption Prime P = " + p);
-    	BigInteger q = rsa.getPrimeQ();
+    	BigInteger q = rsa.getPrimeQ(userInputBitLengthInt);
 //    	Main.println("Decryption Prime Q = " + q);
     	BigInteger pq = rsa.getPQ(p, q);
     	BigInteger e = rsa.getE();
