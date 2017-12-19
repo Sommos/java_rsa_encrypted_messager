@@ -35,7 +35,7 @@ public class Client extends JFrame {
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		int width = (int) screenSize.getWidth();
 //		int height = (int) screenSize.getHeight();
-		setSize(325,375);
+		setSize(625,675);
 		setVisible(true);
 	}
 	
@@ -51,6 +51,7 @@ public class Client extends JFrame {
 			ioException.printStackTrace();
 		} finally {
 			closeEverything();
+			Main.exit(0);
 		}
 	}
 	
