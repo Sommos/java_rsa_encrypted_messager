@@ -1,6 +1,7 @@
 package encryption;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.awt.*;
@@ -35,7 +36,7 @@ public class Client extends JFrame {
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		int width = (int) screenSize.getWidth();
 //		int height = (int) screenSize.getHeight();
-		setSize(625,675);
+		setSize(325,375);
 		setVisible(true);
 	}
 	
@@ -75,11 +76,25 @@ public class Client extends JFrame {
 		ableToType(true);
 		do {
 			try {
-//				EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-				message = (String) input.readObject();
-//				byte[] messageInBytes =  message.getBytes(StandardCharsets.UTF_8);
-//				String decryptedUserMessage = encDecMeth.decrypt(message);
-				showMessage("\n" + message);
+				Object message = input.readObject();
+				EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
+				RSAEncryption rsa = new RSAEncryption();
+				BigInteger p = rsa.getPrimeP(1024);
+				BigInteger q = rsa.getPrimeQ(1024);
+				BigInteger pq = rsa.getPQ(p, q);
+				BigInteger e = rsa.getE();
+				byte[] messageAsByteArray = encDecMeth.toByteArray(message);
+				Main.println(messageAsByteArray);
+				Main.println(encDecMeth.toByteArray(message));
+				byte[] decrypted = encDecMeth.returnDecryptedMessage(messageAsByteArray,rsa.getD(e, p, q), pq);
+				Main.println(decrypted);
+				Main.println(encDecMeth.returnDecryptedMessage(messageAsByteArray,rsa.getD(e, p, q), pq));
+				String messageBytesToString = encDecMeth.bytesToString(decrypted);
+				Main.println(messageBytesToString);
+				Main.println(encDecMeth.bytesToString(decrypted));
+				String finalDecryptedString = new String(messageBytesToString);
+				Main.println(finalDecryptedString);
+				showMessage("\n" + finalDecryptedString);
 			} catch(ClassNotFoundException classNotFoundException) {
 				showMessage("\nThe server is unable to understand that String.");
 			}
@@ -96,6 +111,7 @@ public class Client extends JFrame {
 			connection.close();
 		} catch(IOException ioException) {
 			ioException.printStackTrace();
+			Main.exit(0);
 		}
 	}
 	
