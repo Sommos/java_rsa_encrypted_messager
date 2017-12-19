@@ -1,5 +1,8 @@
 package encryption;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 
 public class EncryptionDecryptionMethods {
@@ -78,7 +81,7 @@ public class EncryptionDecryptionMethods {
     }
     	
     // METHOD TO DECRYPT USER INPUT //
-    protected String decrypt(byte[] enc, int userInputBitLengthInt) {
+    protected String decrypt(byte[] encryptedString, int userInputBitLengthInt) {
     	RSAEncryption rsa = new RSAEncryption();
     	BigInteger p = rsa.getPrimeP(userInputBitLengthInt);
 //   	Main.println("Decryption Prime P = " + p);
@@ -87,7 +90,7 @@ public class EncryptionDecryptionMethods {
     	BigInteger pq = rsa.getPQ(p, q);
     	BigInteger e = rsa.getE();
     	EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-    	byte[] decrypted = encDecMeth.returnDecryptedMessage(enc,rsa.getD(e, p, q), pq);
+    	byte[] decrypted = encDecMeth.returnDecryptedMessage(encryptedString,rsa.getD(e, p, q), pq);
 //    	Main.println("Decrypted String: " + new String(decrypted) + ".");
     	String decryptedString = new String(decrypted);
     	return decryptedString;
@@ -100,5 +103,27 @@ public class EncryptionDecryptionMethods {
     		test += Byte.toString(b);
       	}
     	return test;
+    }
+    
+    // METHOD TO CONVERT OBJECT TO BYTE //
+    public byte[] toByteArray(Object obj) throws IOException {
+        byte[] bytes = null;
+        ByteArrayOutputStream bos = null;
+        ObjectOutputStream oos = null;
+        try {
+            bos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(bos);
+            oos.writeObject(obj);
+            oos.flush();
+            bytes = bos.toByteArray();
+        } finally {
+            if (oos != null) {
+                oos.close();
+            }
+            if (bos != null) {
+                bos.close();
+            }
+        }
+        return bytes;
     }
 }
