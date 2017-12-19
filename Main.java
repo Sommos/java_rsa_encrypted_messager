@@ -24,6 +24,9 @@ public class Main {
 		
 		// Instantiates the RSAEncryption class //
 		RSAEncryption rsa = new RSAEncryption();
+		
+		// Instantiates the EncryptionDecryptionMethods class //
+        EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
 	
 		println("Original String = " + userInput);
 		
@@ -37,9 +40,6 @@ public class Main {
         println("Prime P = " + p);
         println("Prime Q = " + q);
         println("-----END RSA PRIVATE KEY-----\n");
-   
-        // Instantiates the EncryptionDecryptionMethods class //
-        EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
         
         // Gets the value of e //
         BigInteger e = rsa.getE();
@@ -62,8 +62,13 @@ public class Main {
         // Converts the byte array to a String //
         String finalDecryptedString = new String(decrypted);
         
-        // Prints the decrypted String out to the c onsole //
+        // Prints the decrypted String out to the console //
         println("Decrypted String = " + finalDecryptedString);
+        
+        // AWEIGHBWQIEGWQEIUQGEIWUQGEIQUGE //
+        
+
+        // AUDBHASIOUDHWEQOIEHWQOIEHWOEIWE //
         
         // Prints the time to run out to the console //
 		println("\nTime to run = " + (System.currentTimeMillis() - start) + "ms.");
