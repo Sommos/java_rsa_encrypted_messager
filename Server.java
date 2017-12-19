@@ -83,16 +83,6 @@ public class Server extends JFrame {
 		do {
 			try {
 				message = (String) input.readObject();
-//				byte[] messageInBytes = (byte[]) input.readObject();
-//				EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-//				RSAEncryption rsa = new RSAEncryption();
-//				BigInteger e = rsa.getE();
-//				BigInteger p = rsa.getPrimeP();
-//				BigInteger q = rsa.getPrimeQ();
-//				BigInteger pq = rsa.getPQ(p,q);
-//				byte[] decrypted = encDecMeth.returnDecryptedMessage(messageInBytes,rsa.getD(e, p, q), pq);
-//			    String finalDecryptedString = new String(decrypted);
-//			    showMessage("\n" + finalDecryptedString);
 				showMessage("\n" + message);
 			} catch(ClassNotFoundException classNotFoundException) {
 				showMessage("\nThe server is unable to understand that String.");
@@ -111,6 +101,7 @@ public class Server extends JFrame {
 			connection.close();
 		} catch(IOException ioException) {
 			ioException.printStackTrace();
+			Main.exit(0);
 		}
 	}
 	
@@ -118,13 +109,19 @@ public class Server extends JFrame {
 	private void sendMessage(String message) {
 		try {
 			showMessage("\nServer : " + message);
-//			EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-//			String startEncryptionMessage = message;
-//			String encryptedUserMessage = encDecMeth.encrypt(startEncryptionMessage);
-			output.writeObject("Server : " + message);
+			EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
+			RSAEncryption rsa = new RSAEncryption();
+			BigInteger p = rsa.getPrimeP(1024);
+			BigInteger q = rsa.getPrimeQ(1024);
+			BigInteger e = rsa.getE();
+			BigInteger pq = rsa.getPQ(p, q);
+			byte[] encrypted = encDecMeth.returnEncryptedMessage(message.getBytes(), p, q, e, pq);
+			String encryptedString = encDecMeth.bytesToString(encrypted);
+			output.writeObject("Server : " + encryptedString);
 			output.flush();
 		} catch(IOException ioException) {
 			chatWindow.append("\nERROR CODE : 0");
+			Main.exit(0);
 		}
 	}
 	
