@@ -45,13 +45,9 @@ public class Main {
         // Sets the value of e //
         rsa.setE();        
         // Sets the value of d //
-        rsa.setD(rsa.getE(), p, q);
-        // Gets the value of e //
-        BigInteger e = rsa.getE();       
+        rsa.setD(rsa.getE(), p, q);     
         // Sets the value of pq //
         rsa.setPQ(p, q);    
-        // Gets the value of pq from our entered values of p and q (Our original keys) //
-        BigInteger pq = rsa.getPQ(); 
        
         // Prints the generated keys to the console as proof of concept //
         println("\nThese are the original RSA encryption keys (using " + rsa.getBitLength() + " encryption):\n");
@@ -59,14 +55,14 @@ public class Main {
         println("Prime P = " + p);
         println("Prime Q = " + q);
         println("-----END RSA PRIVATE KEY-----\n");        
-       
+        
         // Takes the values generated and the users original message, encrypts it and returns it as a byte array //
-        byte[] encrypted = rsa.returnEncryptedMessage(userInput.getBytes(), p, q, e, pq);        
+        byte[] encrypted = rsa.returnEncryptedMessage(userInput.getBytes(), p, q, rsa.getE(), rsa.getPQ());        
         // May change this back to decrypted if byte values fail but we should be good //
         println("Byte Value (ENCRYPTED) = " + rsa.bytesToString(encrypted));        
         
         // Decrypts the values from the keys given (p and q) //
-        byte[] decrypted = rsa.returnDecryptedMessage(encrypted, rsa.getD(), pq);        
+        byte[] decrypted = rsa.returnDecryptedMessage(encrypted, rsa.getD(), rsa.getPQ());        
         // Prints out the simplistic byte value to the console - May be useful later //
         println("Byte Value (DECRYPTED) = " + rsa.bytesToString(decrypted) + "\n");        
         
