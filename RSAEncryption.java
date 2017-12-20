@@ -1,65 +1,124 @@
 package encryption;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
+import javax.swing.JOptionPane;
+
 public class RSAEncryption {
-	// THIS GETS THE FIRST PRIME (P) //
-	protected BigInteger getPrimeP(int bitLength) {
-//		Sieve sieve = new Sieve();
-//		int p = sieve.randPrimeBetween(1000000000, 999999999);
-		int finalBitLength = bitLength;
+	private BigInteger p;
+	private BigInteger q;
+	private BigInteger pq;
+	private BigInteger pTotient;
+	private BigInteger qTotient;
+	private BigInteger e;
+	private BigInteger d;
+	private int bitLength;
+
+	// This method sets the bit length //
+	protected void setBitLength() {
+		// Gets the bit length of the keys that the user wants to use //
+		String userInputBitLengthString = JOptionPane.showInputDialog("Enter the bit length of the encryption keys (Binary Multiples)");
+		// Parses the resulting String to an int //
+		int userInputBitLengthInt = Integer.parseInt(userInputBitLengthString);
+		this.bitLength = userInputBitLengthInt;
+	}
+	
+	// This method gets the bit length //
+	protected int getBitLength() {
+		return bitLength;
+	}
+	
+	// This method sets the value of prime p //
+	protected void setPrimeP(int bitLength) {
 		SecureRandom random = new SecureRandom();
-		BigInteger p = BigInteger.probablePrime(finalBitLength, random);
-		// DEFAULT VALUE USED FOR TESTING BASIC LOGIC //
-//		int p = 61;
+		BigInteger p = BigInteger.probablePrime(bitLength, random);
+		this.p = p;
+	}
+	
+	// This methods gets the value of prime p //
+	protected BigInteger getPrimeP() {
 		return p;
 	}
 	
-	// THIS GETS THE SECOND PRIME (Q) //
-	protected BigInteger getPrimeQ(int bitLength) {
-//		Sieve sieve = new Sieve();
-//		int q = sieve.randPrimeBetween(1000000000, 999999999);
-		int finalBitLength = bitLength;
+	// This method sets the value of prime q //
+	protected void setPrimeQ(int bitLength) {
 		SecureRandom random = new SecureRandom();
-		BigInteger q = BigInteger.probablePrime(finalBitLength, random);
-		// DEFAULT VALUE USED FOR TESTING BASIC LOGIC //
-//		int q = 53;
+		BigInteger q = BigInteger.probablePrime(bitLength, random);
+		this.q = q;
+	}
+
+	// This method gets the value of prime q //
+	protected BigInteger getPrimeQ() {
 		return q;
 	}
 	
-	// THIS CALCULATES THE MULTIPLICATION OF P AND Q //
-	protected BigInteger getPQ(BigInteger p, BigInteger q) {
-		BigInteger pq = p.multiply(q);
-		return pq;
+	// This method calculates and sets the value of pq //
+	protected void setPQ(BigInteger p, BigInteger q) {
+		this.pq = p.multiply(q);
 	}
 	
-	// THIS GETS THE TOTIENT OF PRIME P //
-	protected BigInteger getPrimePTotient(BigInteger p) {
+	// This method gets the value of pq //
+	protected BigInteger getPQ() {
+		return pq;
+	}
+
+	// This sets the totient of prime p //
+	protected void setPrimePTotient(BigInteger p) {
 		BigInteger one = new BigInteger("" + 1);
 		BigInteger pTotient = p.subtract(one);
+		this.pTotient = pTotient;
+	}
+	
+	// This gets the totient of prime p //
+	protected BigInteger getPrimePTotient() {
 		return pTotient;
 	}
 	
-	// THIS GETS THE TOTIENT OF PRIME Q //
-	protected BigInteger getPrimeQTotient(BigInteger q) {
+	// This sets the totient of prime q //
+	protected void setPrimeQTotient(BigInteger q) {
 		BigInteger one = new BigInteger("" + 1);
 		BigInteger qTotient = q.subtract(one);
+		this.qTotient = qTotient;
+	}
+	
+	// This gets the totient of prime q //
+	protected BigInteger getPrimeQTotient() {
 		return qTotient;
 	}
 	
-	// THIS CALCULATES THE TOTIENTS MULTIPLED //
-	protected int getMultipliedTotients(int primeP, int primeQ) {
-		int multipliedTotients = primeP * primeQ;
-		return multipliedTotients;
+	// This sets the value of e //
+	protected void setE() {
+		BigInteger e = new BigInteger("" + 65537);
+		this.e = e;
 	}
 	
-	// THIS CALCULATES LCM //
-	protected BigInteger lcm(BigInteger a, BigInteger b) {
-		return a.multiply(b.divide(gcd(a,b)));
+	// This gets the value of e //
+	protected BigInteger getE() {
+		return e;
 	}
 	
-	// THIS CALCULATES GCD //
+	// This calculates and sets the value of d //
+	protected void setD(BigInteger e, BigInteger primeP, BigInteger primeQ) {
+		BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+		BigInteger d = e.modInverse(phi);
+		this.d = d;
+	}
+	
+	// This gets the value of d //
+	protected BigInteger getD() {
+		return d;
+	}
+	
+	// This calculates the lowest common multiple of given values //
+	protected BigInteger lcm(BigInteger PrimePTotient, BigInteger PrimeQTotient) {
+		return PrimePTotient.multiply(PrimeQTotient.divide(gcd(PrimePTotient, PrimeQTotient)));
+	}
+	
+	// This calculates the greatest common divisor of given values //
 	protected BigInteger gcd(BigInteger a, BigInteger b) {
 		BigInteger zero = new BigInteger("" + 0);
 		while(!b.equals(zero)){
@@ -70,61 +129,80 @@ public class RSAEncryption {
 		return a;
 	}
 	
-	// THIS CALCULATES E FOR THE PROGRAM //
-	protected BigInteger getE() {
-		BigInteger e = new BigInteger("" + 65537);
-		return e;
-// LEAVE THIS ALONE FOR THE MOMENT - MAY NEED IT LATER //
-/*		int e = 0;
-		for (e=0; e<lcm; e++){
-			
-		} 
-		if((p > 17) || (q > 17)) {
-			e = 257;
-		}else{
-			e = 7;
-		}
-		return e; */		
-	}
+	// Method that encrypts the users message //
+    public byte[] returnEncryptedMessage(byte[] message, BigInteger p, BigInteger q, BigInteger e, BigInteger pq) {
+        return (new BigInteger(message)).modPow(e, pq).toByteArray();
+    }
+    
+    // Method that decrypts the users message //
+    public byte[] returnDecryptedMessage(byte[] message, BigInteger d, BigInteger pq) {
+    	return (new BigInteger(message)).modPow(d, pq).toByteArray();
+    }
+    
+    // Method that returns the byte value of the encrypted message //
+    protected byte[] encryptedByteMethod(String userInput) {
+    	byte[] encrypted = returnEncryptedMessage(userInput.getBytes(), p, q, e, pq);
+    	return encrypted;
+    }
+    
+    // Method that returns the byte value of the decrypted message //
+    protected byte[] decryptedByteMethod(byte[] encrypted) {
+    	byte[] decrypted = returnDecryptedMessage(encrypted, getD(), pq);
+    	return decrypted;
+    }
+    
+    // Method that returns the encrypted message //
+    protected String encrypt(String userInput) {
+        byte[] encrypted = returnEncryptedMessage(userInput.getBytes(), p, q, e, pq);
+        String encryptedString = bytesToString(encrypted);
+        return encryptedString;
+    }
+    	
+    // Mthod that returns the decrypted message //
+    protected String decrypt(byte[] encryptedString) {
+    	byte[] decrypted = returnDecryptedMessage(encryptedString, getD(), pq);
+    	String decryptedString = new String(decrypted);
+    	return decryptedString;
+    }
+    	
+    // Method that converts byte array to a String //
+    public String bytesToString(byte[] encrypted) {
+    	String test = "";
+    	for (byte b : encrypted) {
+    		test += Byte.toString(b);
+      	}
+    	return test;
+    }
+    
+    // Method to convert an object to a byte array //
+    public byte[] toByteArray(Object obj) throws IOException {
+        byte[] bytes = null;
+        ByteArrayOutputStream bos = null;
+        ObjectOutputStream oos = null;
+        try {
+            bos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(bos);
+            oos.writeObject(obj);
+            oos.flush();
+            bytes = bos.toByteArray();
+        } finally {
+            if (oos != null) {
+                oos.close();
+            }
+            if (bos != null) {
+                bos.close();
+            }
+        }
+        return bytes;
+    }
 	
-	// THIS CALCULATES D FOR THE PROGRAM //
-	protected BigInteger getD(BigInteger e, BigInteger p, BigInteger q) {
-// MIGHT NEED THIS LATER // 
-/*		int multipliedTotients = getMultipliedTotients(getPrimePTotient(p), getPrimeQTotient(q));
-		int d = 1;
-		int de = e * d;
-		int x =  % multipliedTotients;
-		Main.println(x);
-		//int y = 1 + ()%
-		//int x = 
-		d = 0;
-		int count = 0;
-		while((e * d % lcm) != 1) {
-			d = d + 1;
-			count = count + 1;
-			if((e * d % lcm) == 1) {
-				if(d > 1000000) {
-					Main.errorPrintln("Error Code : 0");
-					Main.println(d);
-					System.exit(0);
-				}
-			}
-		}
-		d = (d < 0) ? d * - 1 : d;
-*/
-		BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
-		BigInteger d = e.modInverse(phi);
-		return d;
-
-	}
-	
-	// THIS METHOD CASTS AN INT TO A BIGINTEGER DATA TYPE (FOR EASE OF USE) //
+	// This method casts an int to a BigInteger //
 	public BigInteger castBigInteger(int number) {
 		BigInteger x = new BigInteger("" + number);
 		return x;
 	}
 	
-	// THIS METHOD POWERS AND MODS GIVEN VALUES //
+	// This method powers and modulos the given values //
 	public BigInteger powerMod(BigInteger message, BigInteger e, BigInteger pq) {
 		BigInteger powerMod = message.modPow(e,
 				pq);
