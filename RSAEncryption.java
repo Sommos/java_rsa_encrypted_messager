@@ -128,42 +128,59 @@ public class RSAEncryption {
 		}
 		return a;
 	}
-	
 	// Method that encrypts the users message //
-    public byte[] returnEncryptedMessage(byte[] message, BigInteger p, BigInteger q, BigInteger e, BigInteger pq) {
-        return (new BigInteger(message)).modPow(e, pq).toByteArray();
-    }
+	public byte[] returnEncryptedMessage(byte[] message, BigInteger p, BigInteger q, BigInteger e, BigInteger pq) {
+		return (new BigInteger(message)).modPow(e, pq).toByteArray();
+	}
+	    
+	// Method that decrypts the users message //
+	public byte[] returnDecryptedMessage(byte[] message, BigInteger d, BigInteger pq) {
+		return (new BigInteger(message)).modPow(d, pq).toByteArray();
+	}
+	
+//	// Method that encrypts the users message //
+//    public BigInteger returnEncryptedMessage(String message) {
+//    	byte[] messageAsByteArray = message.getBytes();
+//    	BigInteger messageAsBigInteger = new BigInteger(messageAsByteArray);
+//    	BigInteger encryptedMessage = powerMod(messageAsBigInteger, getE(), getPQ());
+//    	return encryptedMessage;
+//    }
+//    
+//    // Method that decrypts the users message //
+//    public BigInteger returnDecryptedMessage(BigInteger message) {
+////    	byte[] messageAsByteArray = toByteArray(message);
+//    	BigInteger decryptedMessageAsBigInteger = powerMod(message, d, pq);
+////    	return message.modPow(getD(), getPQ());
+////    	String decryptedMessageAsString = decryptedMessageAsBigInteger.toString();
+////    	char decryptedMessageAsChar = decryptedMessageAsString.charAt(0);
+////    	String finalDecryptedMessageAsString = Character.toString((char) decryptedMessageAsChar);
+////    	return finalDecryptedMessageAsString;
+//    	return decryptedMessageAsBigInteger;
+//    }
     
-    // Method that decrypts the users message //
-    public byte[] returnDecryptedMessage(byte[] message, BigInteger d, BigInteger pq) {
-    	return (new BigInteger(message)).modPow(d, pq).toByteArray();
-    }
-    
-    // Method that returns the byte value of the encrypted message //
-    protected byte[] encryptedByteMethod(String userInput) {
-    	byte[] encrypted = returnEncryptedMessage(userInput.getBytes(), p, q, e, pq);
-    	return encrypted;
-    }
-    
-    // Method that returns the byte value of the decrypted message //
-    protected byte[] decryptedByteMethod(byte[] encrypted) {
-    	byte[] decrypted = returnDecryptedMessage(encrypted, getD(), pq);
-    	return decrypted;
-    }
-    
-    // Method that returns the encrypted message //
-    protected String encrypt(String userInput) {
-        byte[] encrypted = returnEncryptedMessage(userInput.getBytes(), p, q, e, pq);
-        String encryptedString = bytesToString(encrypted);
-        return encryptedString;
-    }
-    	
-    // Mthod that returns the decrypted message //
-    protected String decrypt(byte[] encryptedString) {
-    	byte[] decrypted = returnDecryptedMessage(encryptedString, getD(), pq);
-    	String decryptedString = new String(decrypted);
-    	return decryptedString;
-    }
+//    // Method that returns the byte value of the encrypted message //
+//    protected BigInteger encryptedByteMethod(String userInput) {
+//    	BigInteger encrypted = returnEncryptedMessage(userInput);
+//    	return encrypted;
+//    }
+//    
+//    // Method that returns the byte value of the decrypted message //
+//    protected BigInteger decryptedByteMethod(BigInteger encrypted) {
+//    	BigInteger decrypted = returnDecryptedMessage(encrypted);
+//    	return decrypted;
+//    }
+//    
+//    // Method that returns the encrypted message //
+//    protected BigInteger encrypt(String userInput) {
+//    	BigInteger encrypted = returnEncryptedMessage(userInput);
+//        return encrypted;
+//    }
+//    	
+//    // Method that returns the decrypted message //
+//    protected BigInteger decrypt(BigInteger encryptedString) {
+//    	BigInteger decrypted = returnDecryptedMessage(encryptedString);
+//    	return decrypted;
+//    }
     	
     // Method that converts byte array to a String //
     public String bytesToString(byte[] encrypted) {
