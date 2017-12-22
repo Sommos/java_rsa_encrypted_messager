@@ -17,13 +17,28 @@ public class RSAEncryption {
 	private BigInteger e;
 	private BigInteger d;
 	private int bitLength;
-
+	private String userInput;
+	
+	// This method sets the user input //
+	protected void setUserInput() {
+		// Gets the message from the user //
+		String userInput = JOptionPane.showInputDialog("Enter your message");
+		
+		this.userInput = userInput;
+	}
+	
+	// This method gets the user input //
+	protected String getUserInput() {
+		return userInput;
+	}
+	
 	// This method sets the bit length //
 	protected void setBitLength() {
 		// Gets the bit length of the keys that the user wants to use //
 		String userInputBitLengthString = JOptionPane.showInputDialog("Enter the bit length of the encryption keys (Binary Multiples)");
 		// Parses the resulting String to an int //
 		int userInputBitLengthInt = Integer.parseInt(userInputBitLengthString);
+	
 		this.bitLength = userInputBitLengthInt;
 	}
 	
@@ -137,6 +152,12 @@ public class RSAEncryption {
 	public byte[] returnDecryptedMessage(byte[] message, BigInteger d, BigInteger pq) {
 		return (new BigInteger(message)).modPow(d, pq).toByteArray();
 	}
+	
+    protected String rsaEncrypt(String message) {
+    	byte[] encrypted = returnEncryptedMessage(message.getBytes(), getPrimeP(), getPrimeQ(), getE(), getPQ());
+    	String encryptedMessage = bytesToString(encrypted);
+    	return encryptedMessage;
+    }
 	
 //	// Method that encrypts the users message //
 //    public BigInteger returnEncryptedMessage(String message) {
