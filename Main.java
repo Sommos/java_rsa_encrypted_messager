@@ -2,7 +2,6 @@ package encryption;
 
 import javax.swing.JFrame;
 import java.math.BigInteger;
-import javax.swing.JOptionPane;
 
 // Don't get mad at this code - it was written by an idiot //
 public class Main {
@@ -14,10 +13,10 @@ public class Main {
 		// Prints the time to run out to the console //
 		println("\nTime to run = " + (System.currentTimeMillis() - start) + "ms.");
 		
-//		client();
+		client();
 	}
 	// Methods for the Main class //
- 
+	
 	// Method for showing a demonstration of the encryption algorithm //
 	private static void demonstration() {
 		// This is the start of the basic RSA encryption demonstration //
