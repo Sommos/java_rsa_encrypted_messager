@@ -122,29 +122,9 @@ public class Server extends JFrame {
 		ableToType(true);
 		do {
 			try {
-//				RSAEncryption rsa = new RSAEncryption();
-				// Casts the input.readObject to a String //
 				message = (String) input.readObject();
-//				byte[] source = message.getBytes();
-				
-//				String finalEncryptedString = new String(source);
-//				message = rsa.dec(message);
 				
 				showMessage("\n" + message);
-//				RSAEncryption rsa = new RSAEncryption();
-				
-//				byte[] source = message.getBytes();
-//				
-//				ByteArrayInputStream bis = new ByteArrayInputStream(source);
-//				ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//				
-//				byte[] sourceAsByteArray = bos.toByteArray();
-
-//				byte[] decrypted = rsa.rsaDecrypt(source);
-//				String finalDecryptedString = new String(decrypted);
-//				String finalEncryptedString = new String(source);
-//				showMessage("\n" + finalEncryptedString);
-				
 			} catch(ClassNotFoundException classNotFoundException) {
 				showMessage("\nThe server is unable to understand that String.");
 			}
@@ -154,44 +134,11 @@ public class Server extends JFrame {
 	// Method that sends a message using the output stream //
 	private void sendMessage(String message) {
 		try {
-//			RSAEncryption rsa = new RSAEncryption();
 			showMessage("\nServer : " + message);
-	        // Takes the values generated and the users original message, encrypts it and returns it as a byte array //
-	        // May change this back to decrypted if byte values fail but we should be good //
-			
-//			BigInteger messageAsBigInteger = new BigInteger(message);
-//			BigInteger e = rsa.getE();
-//			BigInteger pq = rsa.getPQ();
-			
-//			BigInteger finalEncryptedMessage = messageAsBigInteger.modPow(e, pq);
-//			message = rsa.enc(message);
-//			String finalEncryptedString = new String(message);
+
 			output.writeObject("Server : " + message);
-			
 			// Flushes the output stream //
 			output.flush();
-			
-//			byte[] source = message.getBytes();
-//			
-//			ByteArrayInputStream bis = new ByteArrayInputStream(source);
-//			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//			
-//			byte[] sourceAsByteArray = bos.toByteArray();
-//			
-//			byte[] encrypted = rsaEncrypt(sourceAsByteArray);
-//			String finalEncryptedString = new String(encrypted);
-			
-			
-//			byte[] source = message.getBytes();
-//			String finalEncryptedString = new String(source);
-//			
-//			output.writeObject("Server : " + finalEncryptedString);
-//			
-//			// Flushes the output stream //
-//			output.flush();
-			
-//			bis.close();
-//			bos.close();
 		} catch(IOException ioException) {
 			// If an IOException is given to the program, then this message is printed to the console //
 			chatWindow.append("\nERROR CODE : 0");
@@ -199,7 +146,7 @@ public class Server extends JFrame {
 			ioException.printStackTrace();
 			// Exits the program with exit code 0 //
 			Main.exit(0);
-		}
+		} 
 	}
     		
 	// Method that does not allow the user to type to the text box and closes the i/o streams //
