@@ -1,6 +1,7 @@
 package encryption;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.net.*;
 import java.awt.*;
 import javax.swing.*;
@@ -120,19 +121,6 @@ public class Client extends JFrame {
 			try {
 				// Casts the input.readObject to a String //
 				message = (String) input.readObject();
-				
-// 				Still testing encryption/decryption //				
-//				EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-//				RSAEncryption rsa = new RSAEncryption();
-//				rsa.setPrimeP(2048);
-//				rsa.setPrimeQ(2048);
-//				BigInteger p = rsa.getPrimeP();
-//				BigInteger q = rsa.getPrimeQ();
-//				rsa.setPQ(p, q);
-//				rsa.setE();
-//				BigInteger pq = rsa.getPQ();
-//				byte[] decrypted = encDecMeth.returnDecryptedMessage(encDecMeth.toByteArray(message),rsa.getD(), pq);
-				
 				// Prints the input.readObject to the console //
 				showMessage("\n" + message);
 			} catch(ClassNotFoundException classNotFoundException) {
@@ -140,6 +128,23 @@ public class Client extends JFrame {
 			}
 		}
 		while(!message.equals("Server : END CONNECTION"));
+	}
+	
+	// Method that sends a message using the output stream //
+	private void sendMessage(String message) {
+		try {
+			showMessage("\nClient : " + message);
+
+			output.writeObject("Client : " + message);
+			// Flushes the output stream //
+			output.flush();
+		} catch(IOException ioException) {
+			// If an IOException is given to the program, then this message is printed to the console //
+			chatWindow.append("\nClient had an issue with sending that message.");
+			
+			// Exits the program with exit code 0 //
+			Main.exit(0);
+		}
 	}
 	
 	// Method that does not allow the user to type to the text box and closes the i/o streams //
@@ -159,29 +164,6 @@ public class Client extends JFrame {
 		} catch(IOException ioException) {
 			// If an IOException is given to the program, then the stack trace is printed to the console //
 			ioException.printStackTrace();
-			
-			// Exits the program with exit code 0 //
-			Main.exit(0);
-		}
-	}
-	
-	// Method that sends a message using the output stream //
-	private void sendMessage(String message) {
-		try {
-			showMessage("\nClient : " + message);
-			
-//			EncryptionDecryptionMethods encDecMeth = new EncryptionDecryptionMethods();
-//			String startEncryptionMessage = message;
-//			String encryptedUserMessage = encDecMeth.encrypt(startEncryptionMessage);
-
-			// Writes the object to the output stream //
-			output.writeObject("Client : " + message);
-			
-			// Flushes the output stream //
-			output.flush();
-		} catch(IOException ioException) {
-			// If an IOException is given to the program, then this message is printed to the console //
-			chatWindow.append("\nClient had an issue with sending that message.");
 			
 			// Exits the program with exit code 0 //
 			Main.exit(0);
