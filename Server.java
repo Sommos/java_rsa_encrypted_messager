@@ -1,6 +1,7 @@
 package encryption;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.net.*;
 import java.awt.*;
 import javax.swing.*;
@@ -45,7 +46,7 @@ public class Server extends JFrame {
 		// Adds the new JScrollPane, using the chatWindow variable and setting the border layout to center of the screen //
 		add(new JScrollPane(chatWindow));
 		
-// 		Use this to gain the dimensions of the users screen //
+// 		Use this to gain the full dimensions of the users screen //
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		int width = (int) screenSize.getWidth();
 //		int height = (int) screenSize.getHeight();
@@ -72,23 +73,21 @@ public class Server extends JFrame {
 					
 					// Sets up the GUI to read the input stream //
 					whileChatting();
-				} catch(EOFException eofException) {
+				} catch(EOFException eOfException) {
 					// If an EOFException is given to the program, then this message is shown //
+					eOfException.printStackTrace();
 					showMessage("\nThe server has ended the connection.");
+					System.exit(0);
 				} finally {
 					// Closes the streams and makes sure the text fields are un-editable //
 					closeEverything();
-					
-					// Exits the program with exit code 0 //
-					Main.exit(0);
+					System.exit(0);
 				}
 			}
 		} catch(IOException ioException) {
 			// If an IOException is given to the program, then the stack trace is printed to the console //
 			ioException.printStackTrace();
-			
-			// Exits the program with exit code 0 //
-			Main.exit(0);
+			System.exit(0);
 		}
 	}
 	
@@ -113,7 +112,7 @@ public class Server extends JFrame {
 		
 		showMessage("\nStreams are now setup!");
 	}
-	
+
 	// Method that is run whilst the users are connected to each other //
 	private void whileChatting() throws IOException {
 		String message = "You are now connected!\n";
@@ -123,10 +122,16 @@ public class Server extends JFrame {
 		do {
 			try {
 				message = (String) input.readObject();
+//				RSAEncryption rsa = new RSAEncryption();
+//				
+//				BigInteger bigIntegerModPow = new BigInteger(message).modPow(rsa.getD(), rsa.getPQ());
 				
-				showMessage("\n" + message);
+				showMessage("\n" + new String(message));
 			} catch(ClassNotFoundException classNotFoundException) {
-				showMessage("\nThe server is unable to understand that String.");
+				showMessage("\nThe server is unable to understand that String.");	
+				
+				classNotFoundException.printStackTrace();
+				System.exit(0);
 			}
 		} while(!message.equals("Client : END CONNECTION"));
 	}
@@ -134,18 +139,39 @@ public class Server extends JFrame {
 	// Method that sends a message using the output stream //
 	private void sendMessage(String message) {
 		try {
-			showMessage("\nServer : " + message);
-
-			output.writeObject("Server : " + message);
-			// Flushes the output stream //
-			output.flush();
+			if (message.length() < 1 || message.length() > 50) {
+				
+			} else {
+				showMessage("\nServer : " + message);
+				
+//				RSAEncryption rsa = new RSAEncryption();
+//				
+//				rsa.setPrimeP(1024);
+//				rsa.setPrimeQ(1024);
+//				
+//				BigInteger p = rsa.getPrimeP();
+//				BigInteger q = rsa.getPrimeQ();
+//				
+//				rsa.setE();
+//				rsa.setPQ(p, q);
+//				
+//				BigInteger e = rsa.getE();
+//				BigInteger pq = rsa.getPQ();
+//				
+//				byte[] messageAsBytes = message.getBytes();
+//				
+//				BigInteger bigIntegerModPow = new BigInteger(messageAsBytes).modPow(e, pq);
+				
+				output.writeObject("Server : " + message);
+				// Flushes the output stream //
+				output.flush();
+			}
 		} catch(IOException ioException) {
 			// If an IOException is given to the program, then this message is printed to the console //
 			chatWindow.append("\nERROR CODE : 0");
 			
 			ioException.printStackTrace();
-			// Exits the program with exit code 0 //
-			Main.exit(0);
+			System.exit(0);
 		} 
 	}
     		
@@ -166,10 +192,7 @@ public class Server extends JFrame {
 		} catch(IOException ioException) {
 			// If an IOException is given to the program, then the stack trace is printed to the console //
 			ioException.printStackTrace();
-			
-			Main.println("ERROR CODE : 2");
-			// Exits the program with exit code 0 //
-			Main.exit(0);
+			System.exit(0);
 		}
 	}
 	
