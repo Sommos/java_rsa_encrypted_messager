@@ -42,6 +42,7 @@ public class Client extends JFrame {
 				userText.setText("");
 			} 
 		});
+		
 		// Adds the userText and sets the border layout to north of the screen //
 		add(userText, BorderLayout.NORTH);
 		
@@ -51,7 +52,7 @@ public class Client extends JFrame {
 		// Adds the new JScrollPane, using the chatWindow variable and setting the border layout to center of the screen //
 		add(new JScrollPane(chatWindow), BorderLayout.CENTER);
 		
-// 		Use this to gain the dimensions of the users screen //		
+// 		Use this to gain the full dimensions of the users screen //		
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		int width = (int) screenSize.getWidth();
 //		int height = (int) screenSize.getHeight();
@@ -74,18 +75,19 @@ public class Client extends JFrame {
 			
 			// Sets up the GUI to read the input stream //
 			whileChatting();
-		} catch(EOFException eofException) {
+		} catch(EOFException eOfException) {
 			// If an EOFException is given to the program, then this message is shown //
 			showMessage("\nClient terminated connection.");
+			eOfException.printStackTrace();
+			System.exit(0);
 		} catch(IOException ioException) {
 			// If an IOException is given to the program, then the stack trace is printed to the console //
 			ioException.printStackTrace();
+			System.exit(0);
 		} finally {
 			// Closes the streams and makes sure the text fields are un-editable //
 			closeEverything();
-			
-			// Exits the program with exit code 0 //
-			Main.exit(0);
+			System.exit(0);
 		}
 	}
 	
@@ -121,29 +123,64 @@ public class Client extends JFrame {
 			try {
 				// Casts the input.readObject to a String //
 				message = (String) input.readObject();
+				
+	//			RSAEncryption rsa = new RSAEncryption();
+				
+	//			BigInteger d = rsa.getD();
+	//			BigInteger pq = rsa.getPQ();
+				
+	//			byte[] messageAsByteValue = message.getBytes();
+				
+	//			byte[] bigIntegerModPowAsByteArray = new BigInteger(messageAsByteValue).modPow(d, pq).toByteArray();
+				
+	//			String finalString = new String(bigIntegerModPowAsByteArray);
 				// Prints the input.readObject to the console //
 				showMessage("\n" + message);
 			} catch(ClassNotFoundException classNotFoundException) {
 				showMessage("\nThe server is unable to understand that String.");
+				classNotFoundException.printStackTrace();
+				System.exit(0);
 			}
 		}
 		while(!message.equals("Server : END CONNECTION"));
 	}
 	
 	// Method that sends a message using the output stream //
-	private void sendMessage(String message) {
+	private void sendMessage(String message) throws NullPointerException {
 		try {
-			showMessage("\nClient : " + message);
-
-			output.writeObject("Client : " + message);
-			// Flushes the output stream //
-			output.flush();
+			if(message.length() < 1 || message.length() > 50) {
+				
+			} else {			
+				showMessage("\nClient : " + message);
+			
+//				RSAEncryption rsa = new RSAEncryption();
+//				
+//				rsa.setPrimeP(1024);
+//				rsa.setPrimeQ(1024);
+//			
+//				BigInteger p = rsa.getPrimeP();
+//				BigInteger q = rsa.getPrimeQ();
+//			
+//				rsa.setE();
+//				rsa.setPQ(p, q);
+//				
+//				BigInteger e = rsa.getE();
+//				BigInteger pq = rsa.getPQ();
+//				
+//				byte[] messageAsBytes = message.getBytes();
+//			
+//				BigInteger bigIntegerModPow = new BigInteger(messageAsBytes).modPow(e, pq);
+			
+				output.writeObject("Client : " + message);
+				// Flushes the output stream //
+				output.flush();
+			}
 		} catch(IOException ioException) {
 			// If an IOException is given to the program, then this message is printed to the console //
 			chatWindow.append("\nClient had an issue with sending that message.");
 			
-			// Exits the program with exit code 0 //
-			Main.exit(0);
+			ioException.printStackTrace();
+			System.exit(0);
 		}
 	}
 	
@@ -164,9 +201,7 @@ public class Client extends JFrame {
 		} catch(IOException ioException) {
 			// If an IOException is given to the program, then the stack trace is printed to the console //
 			ioException.printStackTrace();
-			
-			// Exits the program with exit code 0 //
-			Main.exit(0);
+			System.exit(0);
 		}
 	}
 	
