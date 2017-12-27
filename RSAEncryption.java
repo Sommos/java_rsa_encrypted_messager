@@ -18,8 +18,10 @@ public class RSAEncryption {
 	// This method sets the user input //
 	protected void setUserInput() {
 		// Gets the message from the user //
-		String userInput = JOptionPane.showInputDialog("Enter your message");
-		
+		String userInput = "";
+		while (userInput.length() < 1 || userInput.length() > 35) {
+			userInput = JOptionPane.showInputDialog("Enter your message");
+		}
 		this.userInput = userInput;
 	}
 	
@@ -74,7 +76,8 @@ public class RSAEncryption {
 	
 	// This method calculates and sets the value of pq //
 	protected void setPQ(BigInteger p, BigInteger q) {
-		this.pq = p.multiply(q);
+		BigInteger pq = p.multiply(q);
+		this.pq = pq;
 	}
 	
 	// This method gets the value of pq //
@@ -137,20 +140,12 @@ public class RSAEncryption {
 	// This calculates the greatest common divisor of given values //
 	protected BigInteger gcd(BigInteger a, BigInteger b) {
 		BigInteger zero = new BigInteger("" + 0);
-		while(!b.equals(zero)){
+		while(!b.equals(zero)) {
 			BigInteger temp = b;
 			b = a.mod(b);
 			a = temp;
 		}
 		return a;
-	}
-	
-	public String enc(String message) {
-		return bytesToString(returnEncryptedMessage(message.getBytes(), getPrimeP(), getPrimeQ(), getE(), getPQ()));
-	}
-	
-	public String dec(String message) {
-		return bytesToString(returnDecryptedMessage(message.getBytes(), getD(), getPQ()));
 	}
 	
 	// Method that encrypts the users message //
@@ -162,16 +157,6 @@ public class RSAEncryption {
 	public byte[] returnDecryptedMessage(byte[] message, BigInteger d, BigInteger pq) {
 		return (new BigInteger(message)).modPow(d, pq).toByteArray();
 	}
-	
-    protected byte[] rsaEncrypt(byte[] message) {
-    	byte[] encrypted = returnEncryptedMessage(message, getPrimeP(), getPrimeQ(), getE(), getPQ());
-    	return encrypted;
-    }
-    
-    protected byte[] rsaDecrypt(byte[] message) {
-    	byte[] decrypted = returnDecryptedMessage(message, getD(), getPQ());
-    	return decrypted;
-    }
     	
     // Method that converts byte array to a String //
     public String bytesToString(byte[] encrypted) {
@@ -194,48 +179,4 @@ public class RSAEncryption {
 				pq);
 		return powerMod; 
 	}
-	
-//	// Method that encrypts the users message //
-//  public BigInteger returnEncryptedMessage(String message) {
-//  	byte[] messageAsByteArray = message.getBytes();
-//  	BigInteger messageAsBigInteger = new BigInteger(messageAsByteArray);
-//  	BigInteger encryptedMessage = powerMod(messageAsBigInteger, getE(), getPQ());
-//  	return encryptedMessage;
-//  }
-//  
-//  // Method that decrypts the users message //
-//  public BigInteger returnDecryptedMessage(BigInteger message) {
-////  	byte[] messageAsByteArray = toByteArray(message);
-//  	BigInteger decryptedMessageAsBigInteger = powerMod(message, d, pq);
-////  	return message.modPow(getD(), getPQ());
-////  	String decryptedMessageAsString = decryptedMessageAsBigInteger.toString();
-////  	char decryptedMessageAsChar = decryptedMessageAsString.charAt(0);
-////  	String finalDecryptedMessageAsString = Character.toString((char) decryptedMessageAsChar);
-////  	return finalDecryptedMessageAsString;
-//  	return decryptedMessageAsBigInteger;
-//  }
-  
-//  // Method that returns the byte value of the encrypted message //
-//  protected BigInteger encryptedByteMethod(String userInput) {
-//  	BigInteger encrypted = returnEncryptedMessage(userInput);
-//  	return encrypted;
-//  }
-//  
-//  // Method that returns the byte value of the decrypted message //
-//  protected BigInteger decryptedByteMethod(BigInteger encrypted) {
-//  	BigInteger decrypted = returnDecryptedMessage(encrypted);
-//  	return decrypted;
-//  }
-//  
-//  // Method that returns the encrypted message //
-//  protected BigInteger encrypt(String userInput) {
-//  	BigInteger encrypted = returnEncryptedMessage(userInput);
-//      return encrypted;
-//  }
-//  	
-//  // Method that returns the decrypted message //
-//  protected BigInteger decrypt(BigInteger encryptedString) {
-//  	BigInteger decrypted = returnDecryptedMessage(encryptedString);
-//  	return decrypted;
-//  }
 }
