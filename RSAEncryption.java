@@ -5,15 +5,15 @@ import javax.swing.JOptionPane;
 import java.security.SecureRandom;
 
 public class RSAEncryption {
-	private String userInput;
-	private int bitLength;
-	private BigInteger p;
-	private BigInteger q;
-	private BigInteger pq;
-	private BigInteger pTotient;
-	private BigInteger qTotient;
-	private BigInteger e;
-	private BigInteger d;
+	static String userInput;
+	static int bitLength;
+	static BigInteger p;
+	static BigInteger q;
+	static BigInteger pq;
+	static BigInteger pTotient;
+	static BigInteger qTotient;
+	static BigInteger e;
+	static BigInteger d;
 	
 	// This method sets the user input //
 	protected void setUserInput() {
@@ -22,7 +22,7 @@ public class RSAEncryption {
 		while (userInput.length() < 1 || userInput.length() > 35) {
 			userInput = JOptionPane.showInputDialog("Enter your message");
 		}
-		this.userInput = userInput;
+		RSAEncryption.userInput = userInput;
 	}
 	
 	// This method gets the user input //
@@ -37,12 +37,12 @@ public class RSAEncryption {
 		// Parses the resulting String to an int //
 		int userInputBitLengthInt = Integer.parseInt(userInputBitLengthString);
 	
-		this.bitLength = userInputBitLengthInt;
+		RSAEncryption.bitLength = userInputBitLengthInt;
 	}
 	
 	// This method sets the bit length to a default value //
 	protected void setBitLengthDefault() {
-		this.bitLength = 1024;
+		RSAEncryption.bitLength = 1024;
 	}
 	
 	// This method gets the bit length //
@@ -54,7 +54,7 @@ public class RSAEncryption {
 	protected void setPrimeP(int bitLength) {
 		SecureRandom random = new SecureRandom();
 		BigInteger p = BigInteger.probablePrime(bitLength, random);
-		this.p = p;
+		RSAEncryption.p = p;
 	}
 	
 	// This methods gets the value of prime p //
@@ -66,7 +66,7 @@ public class RSAEncryption {
 	protected void setPrimeQ(int bitLength) {
 		SecureRandom random = new SecureRandom();
 		BigInteger q = BigInteger.probablePrime(bitLength, random);
-		this.q = q;
+		RSAEncryption.q = q;
 	}
 
 	// This method gets the value of prime q //
@@ -77,7 +77,7 @@ public class RSAEncryption {
 	// This method calculates and sets the value of pq //
 	protected void setPQ(BigInteger p, BigInteger q) {
 		BigInteger pq = p.multiply(q);
-		this.pq = pq;
+		RSAEncryption.pq = pq;
 	}
 	
 	// This method gets the value of pq //
@@ -89,7 +89,7 @@ public class RSAEncryption {
 	protected void setPrimePTotient(BigInteger p) {
 		BigInteger one = new BigInteger("" + 1);
 		BigInteger pTotient = p.subtract(one);
-		this.pTotient = pTotient;
+		RSAEncryption.pTotient = pTotient;
 	}
 	
 	// This gets the totient of prime p //
@@ -101,7 +101,7 @@ public class RSAEncryption {
 	protected void setPrimeQTotient(BigInteger q) {
 		BigInteger one = new BigInteger("" + 1);
 		BigInteger qTotient = q.subtract(one);
-		this.qTotient = qTotient;
+		RSAEncryption.qTotient = qTotient;
 	}
 	
 	// This gets the totient of prime q //
@@ -112,7 +112,7 @@ public class RSAEncryption {
 	// This sets the value of e //
 	protected void setE() {
 		BigInteger e = new BigInteger("" + 65537);
-		this.e = e;
+		RSAEncryption.e = e;
 	}
 	
 	// This gets the value of e //
@@ -124,7 +124,7 @@ public class RSAEncryption {
 	protected void setD(BigInteger e, BigInteger primeP, BigInteger primeQ) {
 		BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 		BigInteger d = e.modInverse(phi);
-		this.d = d;
+		RSAEncryption.d = d;
 	}
 	
 	// This gets the value of d //
