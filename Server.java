@@ -12,8 +12,11 @@ public class Server extends JFrame {
 	private JTextArea chatWindow;
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
+	private String message;
 	private ServerSocket server;
 	private Socket connection;
+	static BigInteger pq;
+	static BigInteger d;
 	
 	// Constructor for the Server sub-class //
 	public Server() {
@@ -77,17 +80,14 @@ public class Server extends JFrame {
 					// If an EOFException is given to the program, then this message is shown //
 					eOfException.printStackTrace();
 					showMessage("\nThe server has ended the connection.");
-					System.exit(0);
 				} finally {
 					// Closes the streams and makes sure the text fields are un-editable //
 					closeEverything();
-					System.exit(0);
 				}
 			}
 		} catch(IOException ioException) {
 			// If an IOException is given to the program, then the stack trace is printed to the console //
 			ioException.printStackTrace();
-			System.exit(0);
 		}
 	}
 	
@@ -115,7 +115,7 @@ public class Server extends JFrame {
 
 	// Method that is run whilst the users are connected to each other //
 	private void whileChatting() throws IOException {
-		String message = "You are now connected!\n";
+		message = "You are now connected!\n";
 		sendMessage(message);
 		// Sets the chat box to be editable //
 		ableToType(true);
@@ -131,7 +131,6 @@ public class Server extends JFrame {
 				showMessage("\nThe server is unable to understand that String.");	
 				
 				classNotFoundException.printStackTrace();
-				System.exit(0);
 			}
 		} while(!message.equals("Client : END CONNECTION"));
 	}
@@ -139,30 +138,32 @@ public class Server extends JFrame {
 	// Method that sends a message using the output stream //
 	private void sendMessage(String message) {
 		try {
-			if (message.length() < 1 || message.length() > 50) {
+			if (message.length() < 1 || message.length() >= 50) {
 				
 			} else {
 				showMessage("\nServer : " + message);
 				
-//				RSAEncryption rsa = new RSAEncryption();
-//				
-//				rsa.setPrimeP(1024);
-//				rsa.setPrimeQ(1024);
-//				
-//				BigInteger p = rsa.getPrimeP();
-//				BigInteger q = rsa.getPrimeQ();
-//				
-//				rsa.setE();
-//				rsa.setPQ(p, q);
-//				
-//				BigInteger e = rsa.getE();
-//				BigInteger pq = rsa.getPQ();
-//				
-//				byte[] messageAsBytes = message.getBytes();
-//				
-//				BigInteger bigIntegerModPow = new BigInteger(messageAsBytes).modPow(e, pq);
+				RSAEncryption rsa = new RSAEncryption();
 				
-				output.writeObject("Server : " + message);
+				rsa.setPrimeP(1024);
+				rsa.setPrimeQ(1024);
+			
+				BigInteger p = rsa.getPrimeP();
+				BigInteger q = rsa.getPrimeQ();
+				
+				rsa.setE();
+				rsa.setPQ(p, q);
+				rsa.setD(rsa.getE(), p, q);
+				
+				BigInteger e = rsa.getE();
+				pq = rsa.getPQ();
+				d = rsa.getD();
+				
+				byte[] messageAsBytes = message.getBytes();
+			
+				BigInteger bigIntegerModPow = new BigInteger(messageAsBytes).modPow(e, pq);
+				
+				output.writeObject("Server : " + bigIntegerModPow);
 				// Flushes the output stream //
 				output.flush();
 			}
@@ -171,7 +172,6 @@ public class Server extends JFrame {
 			chatWindow.append("\nERROR CODE : 0");
 			
 			ioException.printStackTrace();
-			System.exit(0);
 		} 
 	}
     		
@@ -192,7 +192,6 @@ public class Server extends JFrame {
 		} catch(IOException ioException) {
 			// If an IOException is given to the program, then the stack trace is printed to the console //
 			ioException.printStackTrace();
-			System.exit(0);
 		}
 	}
 	
