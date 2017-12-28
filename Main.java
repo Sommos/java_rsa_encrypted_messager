@@ -7,14 +7,14 @@ import java.math.BigInteger;
 public class Main {
 	public static void main(String[] args) {
 		// Saves the current system time to a variable // 
-		long start = System.currentTimeMillis();
-		BasicMethods bsc = new BasicMethods();
+//		long start = System.currentTimeMillis();
+//		BasicMethods bsc = new BasicMethods();
 		
 		assignValues();
 		
-		demonstration();
+//		demonstration();
 		// Prints the time to run out to the console //
-		bsc.println("\nTime to run the demonstration (Including user input time) = " + (System.currentTimeMillis() - start) + "ms.");
+//		bsc.println("\nTime to run the demonstration (Including user input time) = " + (System.currentTimeMillis() - start) + "ms.");
 		
 		client();
 	}
@@ -45,7 +45,7 @@ public class Main {
 		// This is the start of the basic RSA encryption demonstration //
 		BasicMethods bsc = new BasicMethods();
 		bsc.println("Written by Sommos (Discord pm me @ Sommos#1256 (Always on nowadays)");
-		bsc.println("|°º¤ø,¸¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸|- Demonstration Program - Build 0.1.79 -|°º¤ø,¸¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸|");
+		bsc.println("|°º¤ø,¸¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸|- Demonstration Program - Build 0.1.93 -|°º¤ø,¸¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸|");
 		// Instantiates the RSAEncryption class //
 		RSAEncryption rsa = new RSAEncryption();
 		
