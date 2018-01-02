@@ -118,21 +118,21 @@ public class Client extends JFrame {
 		ableToType(true);
 		do {
 			try {
-				BigInteger d = Server.d;
-				BigInteger pq = Server.pq;
+//				BigInteger d = Server.d;
+//				BigInteger pq = Server.pq;
 		
 				// Casts the input.readObject to a String //
 				message = (String) input.readObject();
 				
-				byte[] messageAsByteArray = message.getBytes();
-				
-				byte[] bigIntegerModPow = new BigInteger(messageAsByteArray).modPow(d, pq).toByteArray();
-				
-				String finalDecryptedMessage = new String(bigIntegerModPow);
+//				byte[] messageAsByteArray = message.getBytes();
+//				
+//				byte[] bigIntegerModPow = new BigInteger(messageAsByteArray).modPow(d, pq).toByteArray();
+//				
+//				String finalDecryptedMessage = new String(bigIntegerModPow);
 
 //				byte[] bigIntegerModPowAsByteArray = new BigInteger(messageAsByteValue).modPow(d, pq).toByteArray();
 				// Prints the input.readObject to the console //
-				showMessage("\n" + finalDecryptedMessage);
+				showMessage("\n" + message);
 			} catch(ClassNotFoundException classNotFoundException) {
 				showMessage("\nThe server is unable to understand that String.");
 				classNotFoundException.printStackTrace();
