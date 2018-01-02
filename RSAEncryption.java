@@ -19,7 +19,7 @@ public class RSAEncryption {
 	protected void setUserInput() {
 		// Gets the message from the user //
 		String userInput = "";
-		while (userInput.length() < 1 || userInput.length() > 35) {
+		while (userInput.length() < 1 || userInput.length() >= 50) {
 			userInput = JOptionPane.showInputDialog("Enter your message");
 		}
 		RSAEncryption.userInput = userInput;
