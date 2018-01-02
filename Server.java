@@ -143,27 +143,27 @@ public class Server extends JFrame {
 			} else {
 				showMessage("\nServer : " + message);
 				
-				RSAEncryption rsa = new RSAEncryption();
+//				RSAEncryption rsa = new RSAEncryption();
+//				
+//				rsa.setPrimeP(1024);
+//				rsa.setPrimeQ(1024);
+//			
+//				BigInteger p = rsa.getPrimeP();
+//				BigInteger q = rsa.getPrimeQ();
+//				
+//				rsa.setE();
+//				rsa.setPQ(p, q);
+//				rsa.setD(rsa.getE(), p, q);
+//				
+//				BigInteger e = rsa.getE();
+//				pq = rsa.getPQ();
+//				d = rsa.getD();
+//				
+//				byte[] messageAsBytes = message.getBytes();
+//			
+//				BigInteger bigIntegerModPow = new BigInteger(messageAsBytes).modPow(e, pq);
 				
-				rsa.setPrimeP(1024);
-				rsa.setPrimeQ(1024);
-			
-				BigInteger p = rsa.getPrimeP();
-				BigInteger q = rsa.getPrimeQ();
-				
-				rsa.setE();
-				rsa.setPQ(p, q);
-				rsa.setD(rsa.getE(), p, q);
-				
-				BigInteger e = rsa.getE();
-				pq = rsa.getPQ();
-				d = rsa.getD();
-				
-				byte[] messageAsBytes = message.getBytes();
-			
-				BigInteger bigIntegerModPow = new BigInteger(messageAsBytes).modPow(e, pq);
-				
-				output.writeObject("Server : " + bigIntegerModPow);
+				output.writeObject("Server : " + message);
 				// Flushes the output stream //
 				output.flush();
 			}
