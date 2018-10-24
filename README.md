@@ -16,3 +16,5 @@ Clone the repo:
 
     git clone http://github.com/Sommos/coding_coursework
     cd coding_coursework
+
+I already have an updated version on home machine.
