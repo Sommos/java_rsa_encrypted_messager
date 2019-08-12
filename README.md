@@ -7,7 +7,7 @@ This is an encrypted messaging application that uses the RSA encryption algorith
 
 # Contribution
 
-If you'd like to contribute to `RSA-Encryption Messager` please submit a pull-request on a
+If you'd like to contribute to `rsa_encrypted_message_application` please submit a pull-request on a
 feature branch.
 
 # Installing
