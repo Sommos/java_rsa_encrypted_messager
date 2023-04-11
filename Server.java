@@ -22,41 +22,34 @@ public class Server extends JFrame {
 	public Server() {
 		// Sets the title of the window //
 		setTitle("Samuels Encryption Server Service");
-		
 		// Generates a new JTextField //
 		userText = new JTextField();
-		
 		// Sets the JTextField to be un-editable //
 		userText.setEditable(false);
-		
 		// Adds an action listener //
 		userText.addActionListener(new ActionListener(){
 			// Detects if the action is performed //
 			public void actionPerformed(ActionEvent event){
 				// Sends message with the contents of the action command //
 				sendMessage(event.getActionCommand());
-				
 				// Sets the text field to empty //
 				userText.setText("");
 			}
 		});
 		// Adds the userText and sets the border layout to north of the screen //
 		add(userText, BorderLayout.NORTH);
-		
 		// A new JTextArea is now instantiated //
 		chatWindow = new JTextArea();
-		
 		// Adds the new JScrollPane, using the chatWindow variable and setting the border layout to center of the screen //
 		add(new JScrollPane(chatWindow));
 		
-// 		Use this to gain the full dimensions of the users screen //
+// 		// Use this to gain the full dimensions of the users screen //
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		int width = (int) screenSize.getWidth();
 //		int height = (int) screenSize.getHeight();
 		
 		// Sets the size of the whole window //
 		setSize(325,375);
-		
 		// Sets visibility of the Swing components to true //
 		setVisible(true);
 	}
@@ -70,10 +63,8 @@ public class Server extends JFrame {
 				try {
 					// Waits for a user to connect //
 					waitForConnection();
-					
 					// Sets up the i/o streams //
 					setupStreams();
-					
 					// Sets up the GUI to read the input stream //
 					whileChatting();
 				} catch(EOFException eOfException) {
@@ -103,13 +94,10 @@ public class Server extends JFrame {
 	private void setupStreams() throws IOException {
 		// Sets up the output stream //
 		output = new ObjectOutputStream(connection.getOutputStream()); 
-		
 		// Flushes spare bytes out of the Client machine //
 		output.flush();
-		
 		// Sets up the input stream //
 		input = new ObjectInputStream(connection.getInputStream());
-		
 		showMessage("\nStreams are now setup!");
 	}
 
@@ -122,19 +110,19 @@ public class Server extends JFrame {
 		do {
 			try {
 				message = (String) input.readObject();
-//				RSAEncryption rsa = new RSAEncryption();
-//				
-//				BigInteger bigIntegerModPow = new BigInteger(message).modPow(rsa.getD(), rsa.getPQ());
 				
+				// Deprecated //
+//				RSAEncryption rsa = new RSAEncryption();
+//			
+//				BigInteger bigIntegerModPow = new BigInteger(message).modPow(rsa.getD(), rsa.getPQ());
+	
 				showMessage("\n" + new String(message));
 			} catch(ClassNotFoundException classNotFoundException) {
 				showMessage("\nThe server is unable to understand that String.");	
-				
 				classNotFoundException.printStackTrace();
 			}
 		} while(!message.equals("Client : END CONNECTION"));
 	}
-	
 	// Method that sends a message using the output stream //
 	private void sendMessage(String message) {
 		try {
@@ -183,10 +171,8 @@ public class Server extends JFrame {
 		try {
 			// Closes the output stream //
 			output.close();
-			
 			// Closes the input stream //
 			input.close();
-			
 			// Closes the connection between Client and Server //
 			connection.close();
 		} catch(IOException ioException) {
