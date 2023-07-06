@@ -20,16 +20,12 @@ public class Client extends JFrame {
 	public Client(String host) {
 		// sets the title of the window //
 		setTitle("Samuels Encryption Client Service");
-		
 		// sets the IP address of the server to connect to //
 		serverIP = host;
-		
 		// generates a new JTextField //
 		userText = new JTextField();
-		
 		// sets the JTextField to be un-editable //
 		userText.setEditable(false);
-		
 		// adds an action listener //
 		userText.addActionListener(new ActionListener() {
 			
@@ -37,7 +33,6 @@ public class Client extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				// sends message with the contents of the action command //
 				sendMessage(event.getActionCommand());
-				
 				// sets the text field to empty //
 				userText.setText("");
 			} 
@@ -45,10 +40,8 @@ public class Client extends JFrame {
 		
 		// adds the userText and sets the border layout to north of the screen //
 		add(userText, BorderLayout.NORTH);
-		
 		// a new JTextArea is now instantiated //
 		chatWindow = new JTextArea();
-		
 		// adds the new JScrollPane, using the chatWindow variable and setting the border layout to center of the screen //
 		add(new JScrollPane(chatWindow), BorderLayout.CENTER);
 		
@@ -59,7 +52,6 @@ public class Client extends JFrame {
 		
 		// sets the size of the whole window //
 		setSize(325,375);
-		
 		// sets visibility of the Swing components to true //
 		setVisible(true);
 	}
@@ -69,10 +61,8 @@ public class Client extends JFrame {
 		try {
 			// connects to the server //
 			connectToServer();
-			
 			// sets up the i/o streams //
 			setupStreams();
-			
 			// sets up the GUI to read the input stream //
 			whileChatting();
 		} catch(EOFException eOfException) {
@@ -91,10 +81,8 @@ public class Client extends JFrame {
 	// method that connects to the server using an IP and port //
 	private void connectToServer() throws IOException {
 		showMessage("Attempting connection...");
-		
 		// sets up the connection using the IP and port of the server machine //
 		connection = new Socket(InetAddress.getByName(serverIP), 6789);
-		
 		showMessage("\nConnected to : " + connection.getInetAddress().getHostName());
 	}
 	
@@ -102,13 +90,10 @@ public class Client extends JFrame {
 	private void setupStreams() throws IOException {
 		// sets up the output stream //
 		output = new ObjectOutputStream(connection.getOutputStream());
-		
 		// flushes spare bytes out of the client machine //
 		output.flush();
-		
 		// sets up the input stream //
 		input = new ObjectInputStream(connection.getInputStream());
-		
 		showMessage("\nYour streams are good to go.");
 	}
 	
@@ -119,19 +104,14 @@ public class Client extends JFrame {
 		do {
 			try {
 //				BigInteger d = Server.d;
-//				BigInteger pq = Server.pq;
-		
+//				BigInteger pq = Server.pq;				
+//				byte[] messageAsByteArray = message.getBytes();
+//				byte[] bigIntegerModPow = new BigInteger(messageAsByteArray).modPow(d, pq).toByteArray();
+//				String finalDecryptedMessage = new String(bigIntegerModPow);
+//				byte[] bigIntegerModPowAsByteArray = new BigInteger(messageAsByteValue).modPow(d, pq).toByteArray();
+
 				// casts the input.readObject to a String //
 				message = (String) input.readObject();
-				
-//				byte[] messageAsByteArray = message.getBytes();
-//				
-//				byte[] bigIntegerModPow = new BigInteger(messageAsByteArray).modPow(d, pq).toByteArray();
-//				
-//				String finalDecryptedMessage = new String(bigIntegerModPow);
-
-//				byte[] bigIntegerModPowAsByteArray = new BigInteger(messageAsByteValue).modPow(d, pq).toByteArray();
-				
 				// prints the input.readObject to the console //
 				showMessage("\n" + message);
 			} catch(ClassNotFoundException classNotFoundException) {
@@ -145,10 +125,9 @@ public class Client extends JFrame {
 	private void sendMessage(String message) throws NullPointerException {
 		try {
 			if(message.length() < 1 || message.length() >= 50) {
-				
+				// error
 			} else {			
 				showMessage("\nClient : " + message);
-			
 				output.writeObject("Client : " + message);
 				// flushes the output stream //
 				output.flush();
@@ -169,10 +148,8 @@ public class Client extends JFrame {
 		try {
 			// closes the output stream //
 			output.close();
-			
 			// closes the input stream //
 			input.close();
-			
 			// closes the connection between Client and Server //
 			connection.close();
 		} catch(IOException ioException) {
