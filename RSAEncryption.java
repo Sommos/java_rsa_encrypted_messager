@@ -36,7 +36,6 @@ public class RSAEncryption {
 		String userInputBitLengthString = JOptionPane.showInputDialog("Enter the bit length of the encryption keys (Binary Multiples)");
 		// Parses the resulting String to an int //
 		int userInputBitLengthInt = Integer.parseInt(userInputBitLengthString);
-	
 		RSAEncryption.bitLength = userInputBitLengthInt;
 	}
 	
@@ -57,7 +56,7 @@ public class RSAEncryption {
 		RSAEncryption.p = p;
 	}
 	
-	// This methods gets the value of prime p //
+	// This method gets the value of prime p //
 	protected BigInteger getPrimeP() {
 		return p;
 	}
@@ -158,14 +157,14 @@ public class RSAEncryption {
 		return (new BigInteger(message)).modPow(d, pq).toByteArray();
 	}
     	
-    // Method that converts byte array to a String //
-    public String bytesToString(byte[] encrypted) {
-    	String test = "";
-    	for (byte b : encrypted) {
-    		test += Byte.toString(b);
-      	}
-    	return test;
-    }
+    	// Method that converts byte array to a String //
+    	public String bytesToString(byte[] encrypted) {
+    		String test = "";
+    		for (byte b : encrypted) {
+    			test += Byte.toString(b);
+      		}
+    		return test;
+    	}
 	
 	// This method casts an int to a BigInteger //
 	public BigInteger castBigInteger(int number) {
@@ -175,8 +174,7 @@ public class RSAEncryption {
 	
 	// This method powers and modulos the given values //
 	public BigInteger powerMod(BigInteger message, BigInteger e, BigInteger pq) {
-		BigInteger powerMod = message.modPow(e,
-				pq);
+		BigInteger powerMod = message.modPow(e, pq);
 		return powerMod; 
 	}
 }
