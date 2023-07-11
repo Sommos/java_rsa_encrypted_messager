@@ -1,4 +1,4 @@
-package encryption;
+package src;
 
 public class BasicMethods {
 	public void println(Object x) {

@@ -1,7 +1,9 @@
-package encryption;
+package src;
 
-import javax.swing.JFrame;
 import java.math.BigInteger;
+import javax.swing.JFrame;
+
+import encryption.RSAEncryption;
 
 // Written by Sommos //
 public class Main {

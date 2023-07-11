@@ -1,11 +1,12 @@
-package encryption;
+package src;
 
-import java.io.*;
 import java.math.BigInteger;
+import java.awt.event.*;
+import javax.swing.*;
 import java.net.*;
 import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
+import java.io.*;
+
 
 public class Client extends JFrame {
 	private JTextField userText;
@@ -28,7 +29,6 @@ public class Client extends JFrame {
 		userText.setEditable(false);
 		// adds an action listener //
 		userText.addActionListener(new ActionListener() {
-			
 			// detects if the action is performed //
 			public void actionPerformed(ActionEvent event) {
 				// sends message with the contents of the action command //
@@ -45,7 +45,7 @@ public class Client extends JFrame {
 		// adds the new JScrollPane, using the chatWindow variable and setting the border layout to center of the screen //
 		add(new JScrollPane(chatWindow), BorderLayout.CENTER);
 		
-// 		Use this to gain the full dimensions of the users screen //		
+		// use this to gain the full dimensions of the users screen //		
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		int width = (int) screenSize.getWidth();
 //		int height = (int) screenSize.getHeight();
